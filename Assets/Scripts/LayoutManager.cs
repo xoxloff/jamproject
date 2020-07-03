@@ -27,13 +27,14 @@ public class LayoutManager : MonoBehaviour
 
     public void AddManufacturePrefabToFactory()
     {
-        GameObject newChild = new GameObject();
-        if (factoryRef != null && manufacturePrefab != null)
+        if (factoryRef == null && manufacturePrefab == null)
         {
-            newChild = Instantiate(manufacturePrefab, factoryRef.transform);
+            return;
         }
 
-        newChild.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = (factoryRef.transform.childCount).ToString();
+        GameObject newChild = Instantiate(manufacturePrefab, factoryRef.transform);
+
+        //newChild.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = (factoryRef.transform.childCount).ToString();
     }
 
     public void OnClickExitButton()
