@@ -17,10 +17,14 @@
 	3. Проект содержит gitignore специальный для Unity, так что в целом можно юзать -- "git add *".
 	4. Коммитим изменения -- "git commit -m "Коментарий" ".
 	5. Пушим -- "git push"
+	
+	Создание новой ветки:
+	
+	1. git branch branch_name
+	2. git checkout branch_name
+	3. Пушим ветку в основной репозиторий -- "git push --set-upstream origin branch_name"
 
 	Смена ветки:
 	
-	1. Не забываем апдейтнуть состояние репозитория -- "git remote update".
-	2. Переключаемся на нужную ветку -- "git checkout -b project_branch"
-	3. Пулл изменений по данной ветке из репозитория -- "git pull origin project_branch"
+	1. git checkout branch_name
 
