@@ -10,6 +10,10 @@ public class LayoutManager : MonoBehaviour
     private GameObject manufacturePrefab;
     [SerializeField]
     private GameObject exitPanel;
+    [SerializeField]
+    private GameObject factoryUpgradePanel;
+    [SerializeField]
+    private GameObject scientistsUpgradePanel;
 
     void Start()
     {
@@ -50,5 +54,23 @@ public class LayoutManager : MonoBehaviour
     public void QuiteGame()
     {
         Application.Quit();
+    }
+
+    public void OnClickFactoryButton()
+    {
+        factoryUpgradePanel.SetActive(false);
+        scientistsUpgradePanel.SetActive(false);
+    }
+
+    public void OnClickFactoryUpgradeButton()
+    {
+        factoryUpgradePanel.SetActive(true);
+        scientistsUpgradePanel.SetActive(false);
+    }
+
+    public void OnClickScientistsUpgrageButton()
+    {
+        factoryUpgradePanel.SetActive(false);
+        scientistsUpgradePanel.SetActive(true);
     }
 }
