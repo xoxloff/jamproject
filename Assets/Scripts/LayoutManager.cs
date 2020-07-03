@@ -14,16 +14,19 @@ public class LayoutManager : MonoBehaviour
     private GameObject factoryUpgradePanel;
     [SerializeField]
     private GameObject scientistsUpgradePanel;
+    [SerializeField]
+    private GameObject playerInfoPanel;
+
 
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Application.platform == RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Escape))
+        if (Application.platform == RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Escape))
         {
             OnClickExitButton();
         }
@@ -43,7 +46,14 @@ public class LayoutManager : MonoBehaviour
 
     public void OnClickExitButton()
     {
-        exitPanel.SetActive(!exitPanel.activeSelf);
+        if (playerInfoPanel.activeSelf)
+        {
+            playerInfoPanel.SetActive(false);
+        }
+        else
+        {
+            exitPanel.SetActive(!exitPanel.activeSelf);
+        }
     }
 
     public void ClosePopupExitPanel()
@@ -73,4 +83,10 @@ public class LayoutManager : MonoBehaviour
         factoryUpgradePanel.SetActive(false);
         scientistsUpgradePanel.SetActive(true);
     }
+
+    public void OnClickPlayerInfoButton()
+    {
+        playerInfoPanel.SetActive(!playerInfoPanel.activeSelf);
+    }
+
 }
