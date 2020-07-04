@@ -2,8 +2,8 @@
 
 public interface ICurrency
 {
-    public int Id { get; }
-    public Image Image { get; set; }
-    public string Name { get; set; }
-    public ShortBigInteger Value { get; set; }
+    int Id { get; }
+    Image Image { get; set; }
+    string Name { get; set; }
+    ShortBigInteger Value { get; set; }
 }
