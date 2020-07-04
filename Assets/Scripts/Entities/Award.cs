@@ -5,24 +5,17 @@ using UnityEngine;
 public class Award : MonoBehaviour
 {
     [SerializeField]
-    private int scientificCurrency;
+    private ScientistCurrency scientistCurrency;
     [SerializeField]
-    private List<Scientist> scientistsCards;
+    private List<Scientist> availableScientists;
     [SerializeField]
-    private int scientificCurrencyLimit;
+    private List<Scientist> droppedScientists;
     [SerializeField]
-    private int scientistsCardLimit;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private ShortBigInteger maxScientistCurrency;
+    [SerializeField]
+    private ShortBigInteger minScientistCurrency;
+    [SerializeField]
+    private int maxScientistsNumber;
+    [SerializeField]
+    private int minScientistsNumber;
 }

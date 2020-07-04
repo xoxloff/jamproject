@@ -5,23 +5,19 @@ using UnityEngine.UI;
 
 public class Quest : MonoBehaviour
 {
-    public Quest(int id)
-    {
-        this.id = id;
-    }
-
-    [SerializeField]
-    private int id;
     [SerializeField]
     private int description;
-    [SerializeField]
+    [SerializeField] 
     private Image icon;
     [SerializeField]
-    private int upgradeCost;
+    private int name;
     [SerializeField]
-    private int manufacture;
+    private ShortBigInteger requiredAmount;
     [SerializeField]
-    private int level;
+    private ShortBigInteger currentAmount;
     [SerializeField]
-    private int performanceRatio;
+    private Manufacture manufacture;
+    [SerializeField]
+    private List<Award> awards;
+
 }

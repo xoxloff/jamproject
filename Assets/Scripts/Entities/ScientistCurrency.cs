@@ -3,34 +3,27 @@ using UnityEngine.UI;
 
 public class ScientistCurrency : MonoBehaviour, ICurrency
 {
-    [SerializeField]
-    private int id;
+
     [SerializeField]
     private Image image;
     [SerializeField]
     private string name;
     [SerializeField]
-    private ShortBigInteger value;
+    private ShortBigInteger amount;
 
-    public ScientistCurrency(int _id)
+    public Image Image
     {
-        Id = _id;
+        get => image;
+        set => image = value;
     }
-    public ScientistCurrency(int id, string _name) : this(id)
+    public string Name
     {
-        Name = _name;
+        get => name;
+        set => name = value;
     }
-
-
-    [SerializeField]
-    public int Id { get; private set; }
-
-    [SerializeField]
-    public Image Image { get; set; }
-
-    [SerializeField]
-    public string Name { get; set; }
-
-    [SerializeField]
-    public ShortBigInteger Value { get; set; }
+    public ShortBigInteger Amount
+    {
+        get => amount;
+        set => amount = value;
+    }
 }

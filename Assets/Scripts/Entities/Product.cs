@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-public class MainCurrency : MonoBehaviour, ICurrency
+public class Product : MonoBehaviour, ICurrency
 {
     [SerializeField]
     private Image image;

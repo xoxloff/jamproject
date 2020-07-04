@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Manufacture : MonoBehaviour
@@ -6,33 +7,23 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private Image icon;
     [SerializeField]
-    private ShortBigInteger currentCountOfCurrency;
+    private ShortBigInteger productsNumber;
     [SerializeField]
-    private ShortBigInteger additionalCountOfCurrency;
+    private ShortBigInteger addingProductsNumber;
     [SerializeField]
-    private ShortBigInteger currentCurrencyMultiplier;
+    private ShortBigInteger productsRatio;
     [SerializeField]
-    private ShortBigInteger additionalCurrencyMultiplier;
+    private ShortBigInteger addingProductsRatio;
     [SerializeField]
-    private double timeForCreate;
+    private float productionTime;
     [SerializeField]
-    private double timeMultiplier;
+    private float timeRatio;
     [SerializeField]
-    private ShortBigInteger cost;
+    private List<ICurrency> cost;
     [SerializeField]
-    private Scientist scientistCard;
+    private Scientist scientist;
     [SerializeField]
-    private int scientificCurrency;
+    private ScientistCurrency scientistCurrency;
     [SerializeField]
-    private int scientificTrigger;
-
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private int scientificTrigger; //?
 }

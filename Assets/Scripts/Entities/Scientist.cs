@@ -1,31 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Scientist : MonoBehaviour
 {
     [SerializeField]
     private int id;
     [SerializeField]
+    private Image icon;
+    [SerializeField]
     private string name;
     [SerializeField]
-    private int costToUpgrade;
+    private string discription;
     [SerializeField]
-    private Manufacture accessoryToManufacture;
+    private int upgradeCost;
     [SerializeField]
-    private int currentLevel;
+    private Manufacture manufacture;
     [SerializeField]
-    private int manufactureMultiplier;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private int level;
+    [SerializeField]
+    private int performanceRatio;
 }
