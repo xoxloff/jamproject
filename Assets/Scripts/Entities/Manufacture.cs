@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ManufactureModel : MonoBehaviour
+public class Manufacture : MonoBehaviour
 {
 
     public Image manufactureIcon;
