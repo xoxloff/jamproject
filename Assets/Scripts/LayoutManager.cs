@@ -74,14 +74,14 @@ public class LayoutManager : MonoBehaviour
 
     public void OnClickFactoryUpgradeButton()
     {
-        factoryUpgradePanel.SetActive(true);
+        factoryUpgradePanel.SetActive(!factoryUpgradePanel.activeSelf);
         scientistsUpgradePanel.SetActive(false);
     }
 
     public void OnClickScientistsUpgrageButton()
     {
         factoryUpgradePanel.SetActive(false);
-        scientistsUpgradePanel.SetActive(true);
+        scientistsUpgradePanel.SetActive(!scientistsUpgradePanel.activeSelf);
     }
 
     public void OnClickPlayerInfoButton()
