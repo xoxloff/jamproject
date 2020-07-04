@@ -6,23 +6,29 @@ using UnityEngine.UI;
 
 public class MainCurrency : MonoBehaviour, ICurrency
 {
-    public MainCurrency(int id) : base()
-    {
-        Id = id;
-    }
-    public MainCurrency(int id, string name) : this(id)
-    {
-        Name = name;
-    }
+
     [SerializeField]
+    private int id;
+    [SerializeField]
+    private Image image;
+    [SerializeField]
+    private string name;
+    [SerializeField]
+    private ShortBigInteger value;
+
+    public MainCurrency(int _id) : base()
+    {
+        Id = _id;
+    }
+    public MainCurrency(int id, string _name) : this(id)
+    {
+        Name = _name;
+    }
     public int Id { get; private set; }
 
-    [SerializeField]
     public Image Image { get; set; }
 
-    [SerializeField]
     public string Name { get; set; }
 
-    [SerializeField]
     public ShortBigInteger Value { get; set; }
 }

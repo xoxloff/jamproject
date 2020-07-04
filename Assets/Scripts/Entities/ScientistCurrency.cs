@@ -3,13 +3,22 @@ using UnityEngine.UI;
 
 public class ScientistCurrency : MonoBehaviour, ICurrency
 {
-    public ScientistCurrency(int id)
+    [SerializeField]
+    private int id;
+    [SerializeField]
+    private Image image;
+    [SerializeField]
+    private string name;
+    [SerializeField]
+    private ShortBigInteger value;
+
+    public ScientistCurrency(int _id)
     {
-        Id = id;
+        Id = _id;
     }
-    public ScientistCurrency(int id, string name) : this(id)
+    public ScientistCurrency(int id, string _name) : this(id)
     {
-        Name = name;
+        Name = _name;
     }
 
 
