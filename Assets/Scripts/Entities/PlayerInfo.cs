@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class PlayerInfo : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField]
+    private int rank;
+    [SerializeField]
+    private int currentRankValue;
+    [SerializeField]
+    private int requiredRankValue;
+    [SerializeField]
+    private MainCurrency mainCurrency;
+    [SerializeField]
+    private ScientistCurrency scientistCurrency;
+    [SerializeField]
+    private List<Scientist> scientists;
+    [SerializeField]
+    private List<Factory> factories;
+    [SerializeField]
+    private List<Quest> quests;
 }

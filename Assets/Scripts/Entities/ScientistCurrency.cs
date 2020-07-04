@@ -12,8 +12,16 @@ public class ScientistCurrency : MonoBehaviour, ICurrency
         Name = name;
     }
 
+
+    [SerializeField]
     public int Id { get; private set; }
+
+    [SerializeField]
     public Image Image { get; set; }
+
+    [SerializeField]
     public string Name { get; set; }
+
+    [SerializeField]
     public ShortBigInteger Value { get; set; }
 }
