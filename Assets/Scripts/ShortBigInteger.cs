@@ -25,7 +25,6 @@ public struct ShortBigInteger
     public ShortBigInteger(BigInteger value) : this()
     {
         Value = value;
-        GetNumber(value);
     }
 
     private float GetNumber(BigInteger num)
@@ -80,9 +79,10 @@ public struct ShortBigInteger
         }
         return number;
     }
-    public static float Division(ShortBigInteger a, ShortBigInteger b)
+    public static float Division(ShortBigInteger a, ShortBigInteger b) => Division(a.Value, b.Value);
+    public static float Division(BigInteger a, BigInteger b)
     {
-        return (float)Math.Exp(BigInteger.Log(BigInteger.Abs(a.Value)) - BigInteger.Log(BigInteger.Abs(b.Value))) * a.Value.Sign * b.Value.Sign;
+        return (float)Math.Exp(BigInteger.Log(BigInteger.Abs(a)) - BigInteger.Log(BigInteger.Abs(BigInteger.Abs(b)))) * a.Sign * b.Sign;
     }
     public bool Equals(ShortBigInteger other) => Value.Equals(other.Value);
     public static ShortBigInteger operator ++(ShortBigInteger a) => new ShortBigInteger(a.Value + 1);
@@ -117,9 +117,7 @@ public struct ShortBigInteger
     public static implicit operator BigInteger(ShortBigInteger v) => v.Value;
     public static explicit operator string(ShortBigInteger v) => v.ToString();
     public static implicit operator ShortBigInteger(BigInteger v) => new ShortBigInteger(v);
-    public static implicit operator ShortBigInteger(short v) => new ShortBigInteger(v);
     public static implicit operator ShortBigInteger(int v) => new ShortBigInteger(v);
-    public static implicit operator ShortBigInteger(long v) => new ShortBigInteger(v);
     public static implicit operator ShortBigInteger(string v)
     {
         var line = v.Trim().Split(' ');

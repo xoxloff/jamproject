@@ -25,7 +25,7 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private ScientistCurrency scientistCurrency;
     [SerializeField]
-    private int scientificTrigger; //rename
+    private ShortBigInteger scientificTrigger; //rename
     [SerializeField]
     private Text productsNumberText;
     [SerializeField]
@@ -38,17 +38,20 @@ public class Manufacture : MonoBehaviour
     {
         productsNumber = new Product();
         productsNumberText.text = "0";
+        scientificTrigger = new ShortBigInteger(10);
     }
 
     public void BtnClick(GameObject go)
     {
-        productsNumber.Amount+=1;
+        productsNumber.Amount+= productsRatio;
         productsNumberText.text = productsNumber.Amount.ToString();
+        Debug.Log(productsNumber.Amount.ToString());
 
         fillLayer.DrawLayer(ShortBigInteger.Division(productsNumber.Amount,scientificTrigger));
         if (productsNumber.Amount+1 > scientificTrigger)
         {
             scientificTrigger *= 10;
+            Debug.Log(scientificTrigger.ToString());
         }
     }
 
