@@ -11,9 +11,9 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private Product addingProductsNumber; //adding
     [SerializeField]
-    private int productsRatio; // current ration
+    private ShortBigInteger productsRatio; // current ration
     [SerializeField]
-    private int addingProductsRatio; // adding ratio
+    private ShortBigInteger addingProductsRatio; // adding ratio
     [SerializeField]
     private float productionTime;
     [SerializeField]
@@ -29,30 +29,59 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private Text productsNumberText;
     [SerializeField]
-    private FillLayer fillLayer;
+    private FillLayer productsFillLayer;
+    [SerializeField]
+    private Text addingProductsNumberText;
+    [SerializeField]
+    private FillLayer addingProductsFillLayer;
 
+    private Product _kartoha; // remove
+    [SerializeField]
+    private Text _kartohaText;
 
     public float ProductionTime { get=>productionTime; set=>productionTime=value; }
 
     private void Start()
     {
-        productsNumber = new Product();
-        productsNumberText.text = "0";
+        productsNumber = new Product() { Amount = new ShortBigInteger(1)};
+        addingProductsNumber = new Product() {Amount=new ShortBigInteger(50)};
+        _kartoha = new Product() {Name="Картоха", Amount= new ShortBigInteger(0) };
+        productsNumberText.text = "1";
+        addingProductsNumberText.text = "0";
         scientificTrigger = new ShortBigInteger(10);
+        productsRatio = (ShortBigInteger)"1";
+        addingProductsRatio = (ShortBigInteger)"50";
+        UpdateTextFields();
     }
 
-    public void BtnClick(GameObject go)
+    public void ProductBtnClick(GameObject go)
     {
-        productsNumber.Amount+=productsRatio;
-        productsNumberText.text = productsNumber.Amount.ToString();
-        Debug.Log(productsNumber.Amount.ToString());
+        _kartoha.Amount += addingProductsNumber.Amount;
 
-        fillLayer.DrawLayer(ShortBigInteger.Division(productsNumber.Amount,scientificTrigger));
-        if (productsNumber.Amount+1 > scientificTrigger)
+        Debug.Log(_kartoha.Amount);
+        UpdateTextFields();
+    }
+
+    public void BuyBtnClick(GameObject go)
+    {
+        productsNumber.Amount += 1;
+        addingProductsNumber.Amount = productsNumber.Amount*addingProductsRatio;
+
+        productsFillLayer.DrawLayer(ShortBigInteger.Division(productsNumber.Amount, scientificTrigger));
+
+        if (productsNumber.Amount + 1 > scientificTrigger)
         {
             scientificTrigger *= 10;
             Debug.Log(scientificTrigger.ToString());
         }
+        UpdateTextFields();
+    }
+
+    private void UpdateTextFields()
+    {
+        productsNumberText.text = productsNumber.Amount.ToString();
+        addingProductsNumberText.text = addingProductsNumber.Amount.ToString();
+        _kartohaText.text = _kartoha.Amount.ToString();
     }
 
 }

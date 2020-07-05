@@ -15,7 +15,6 @@ public class FillLayer : MonoBehaviour
 
     public void DrawLayer(float _ratio)
     {
-        Debug.Log(_ratio.ToString());
         ratio = _ratio > 1 ? 1 : _ratio;
         rect.localScale = new Vector3(ratio, 1, 1);
     }
