@@ -8,13 +8,15 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private Image icon;
     [SerializeField]
-    private Product productsNumber; //current
+    private Product product;
     [SerializeField]
-    private Product addingProductsNumber; //adding
+    private ShortBigInteger workersNumber;
+    [SerializeField]
+    private ShortBigInteger addingProducts;
     [SerializeField]
     private ShortBigInteger productsRatio; // current ration
     [SerializeField]
-    private ShortBigInteger addingProductsRatio; // adding ratio
+    private ShortBigInteger addingProductsNumber;
     [SerializeField]
     private float productionTime;
     [SerializeField]
@@ -27,6 +29,8 @@ public class Manufacture : MonoBehaviour
     private ScientistCurrency scientistCurrency;
     [SerializeField]
     private ShortBigInteger scientificTrigger; //rename
+
+    #region UI
     [SerializeField]
     private Text productsNumberText;
     [SerializeField]
@@ -35,55 +39,99 @@ public class Manufacture : MonoBehaviour
     private Text addingProductsNumberText;
     [SerializeField]
     private FillLayer addingProductsFillLayer;
+    #endregion
 
-    private Factory factory;
-
-    public event EventHandler FactoryTextUpdate;
-
-    public float ProductionTime { get=>productionTime; set=>productionTime=value; }
+    public event EventHandler<ManufactureEventArgs> FactoryTextUpdate;
+    public event EventHandler<BuyEventArgs> Buy;
+    public Product Product
+    {
+        get => product;
+        set => product = value;
+    }
+    public float ProductionTime
+    {
+        get => productionTime;
+        set => productionTime = value;
+    }
+    public ShortBigInteger WorkersNumber
+    {
+        get => workersNumber;
+        set => workersNumber = value;
+    }
+    public ShortBigInteger AddingProducts
+    {
+        get => addingProducts;
+        set => addingProducts = value;
+    }
+    public ShortBigInteger ProductsRatio
+    {
+        get => productsRatio;
+        set => productsRatio = value;
+    }
+    public ShortBigInteger AddingProductsNumber
+    {
+        get => addingProductsNumber;
+        set => addingProductsNumber = value;
+    }
+    public float TimeRatio
+    {
+        get => timeRatio;
+        set => timeRatio = value;
+    }
+    public List<ICurrency> Cost
+    {
+        get => cost;
+        set => cost = value;
+    }
+    public Scientist Scientist
+    {
+        get => scientist;
+        set => scientist = value;
+    }
+    public ScientistCurrency ScientistCurrency
+    {
+        get => scientistCurrency;
+        set => scientistCurrency = value;
+    }
+    public ShortBigInteger ScientificTrigger
+    {
+        get => scientificTrigger;
+        set => scientificTrigger = value;
+    }
 
     private void Start()
     {
-        factory = GameObject.FindGameObjectWithTag("PotatoFactory").GetComponent<Factory>();
-
-        productsNumber = new Product() { Amount = new ShortBigInteger(1)};
-        addingProductsNumber = new Product() {Amount=new ShortBigInteger(50)};
-        productsNumberText.text = "1";
-        addingProductsNumberText.text = "0";
-        scientificTrigger = new ShortBigInteger(10);
-        productsRatio = (ShortBigInteger)"1";
-        addingProductsRatio = (ShortBigInteger)"50";
+        addingProducts = workersNumber * addingProductsNumber * productsRatio;
         UpdateTextFields();
     }
 
     public void ProductBtnClick()
     {
-        factory.MainProduct.Amount += addingProductsNumber.Amount;
-
-        Debug.Log(factory.MainProduct.Amount);
         UpdateTextFields();
-        FactoryTextUpdate?.Invoke(this,EventArgs.Empty);
+        product.Amount += addingProducts;
+        FactoryTextUpdate?.Invoke(this, new ManufactureEventArgs(addingProducts));
     }
-
     public void BuyBtnClick()
     {
-        productsNumber.Amount += 1;
-        addingProductsNumber.Amount = productsNumber.Amount*addingProductsRatio;
-
-        productsFillLayer.DrawLayer(ShortBigInteger.Division(productsNumber.Amount, scientificTrigger));
-
-        if (productsNumber.Amount + 1 > scientificTrigger)
-        {
-            scientificTrigger *= 10;
-            Debug.Log(scientificTrigger.ToString());
-        }
-        UpdateTextFields();
+        Buy?.Invoke(this, new BuyEventArgs(Cost));
+    }
+    public void UpdateTextFields()
+    {
+        productsNumberText.text = workersNumber.ToString();
+        addingProductsNumberText.text = addingProducts.ToString();
     }
 
-    private void UpdateTextFields()
+    public void BuyWorker(ShortBigInteger workerNumber)
     {
-        productsNumberText.text = productsNumber.Amount.ToString();
-        addingProductsNumberText.text = addingProductsNumber.Amount.ToString();
+        workersNumber += workerNumber;
+        addingProducts = workersNumber * addingProductsNumber * productsRatio;
+        productsFillLayer.DrawLayer(ShortBigInteger.Division(workersNumber, scientificTrigger));
+
+        if (workersNumber + 1 > scientificTrigger)
+        {
+            scientificTrigger *= 10;
+        }
+        UpdateTextFields();
     }
 
 }
