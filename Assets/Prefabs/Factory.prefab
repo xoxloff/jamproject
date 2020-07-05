@@ -310,9 +310,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e06ee151445c54e80260a06b59b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCurrency: {fileID: 0}
+  mainProduct: {fileID: 0}
   manufactures: []
-  purchaseMode: 0
+  products: []
+  manufacturePrefab: {fileID: 0}
+  manufactureContainer: {fileID: 0}
+  factoryText: {fileID: 0}
+  purchaseModeText: {fileID: 0}
 --- !u!1 &2192803232364892682
 GameObject:
   m_ObjectHideFlags: 0

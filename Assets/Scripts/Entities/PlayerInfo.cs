@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInfo : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class PlayerInfo : MonoBehaviour
         X50,
         X100
     };
+
     [SerializeField]
     private int rank;
     [SerializeField]
@@ -29,6 +32,8 @@ public class PlayerInfo : MonoBehaviour
     private List<Factory> factories;
     [SerializeField]
     private List<Quest> quests;
+    [SerializeField]
+    private Text purchaseModeText;
 
     public PurchaseModeEnum PurchaseMode
     {
@@ -81,9 +86,33 @@ public class PlayerInfo : MonoBehaviour
     {
         PurchaseMode = PurchaseModeEnum.X100;
         mainCurrency = new MainCurrency(100);
+        purchaseModeText.text = GetPurchaseMode();
         foreach (var factory in factories)
         {
             factory.PlayerRef = this;
+        }
+    }
+
+    public void ClickPurchaseModeButton()
+    {
+        PurchaseMode = (PurchaseModeEnum)(((int)PurchaseMode + 1) % 4);
+        purchaseModeText.text = GetPurchaseMode();
+    }
+
+    private string GetPurchaseMode()
+    {
+        switch (PurchaseMode)
+        {
+            case PurchaseModeEnum.X1:
+                return "x1";
+            case PurchaseModeEnum.X10:
+                return "10%";
+            case PurchaseModeEnum.X50:
+                return "50%";
+            case PurchaseModeEnum.X100:
+                return "max";
+            default:
+                throw new FormatException();
         }
     }
 }
