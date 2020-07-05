@@ -5,10 +5,9 @@ using UnityEngine;
 public struct ShortBigInteger
 {
     public static readonly char[] Alphabet = "ABCDEFGHJK".ToCharArray();
-    public static readonly int DefaultMaxValue = 1000;
+    public static readonly int MaxValue = 1000;
 
     private BigInteger _value;
-    private int _maxValue;
     private string _suffix;
     private float _shortValue;
 
@@ -22,25 +21,11 @@ public struct ShortBigInteger
             GetNumber(this._value);
         }
     }
-    public int MaxValue
-    {
-        get => _maxValue;
-        set
-        {
 
-            _maxValue = value == 0 ? DefaultMaxValue : value;
-            GetNumber(this._value);
-        }
-    }
-
-    public ShortBigInteger(int maxValue, BigInteger value) : this()
+    public ShortBigInteger(BigInteger value) : this()
     {
-        MaxValue = maxValue;
         Value = value;
         GetNumber(value);
-    }
-    public ShortBigInteger(BigInteger value) : this(DefaultMaxValue, value)
-    {
     }
 
     private float GetNumber(BigInteger num)
@@ -99,80 +84,36 @@ public struct ShortBigInteger
     {
         return (float)Math.Exp(BigInteger.Log(BigInteger.Abs(a.Value)) - BigInteger.Log(BigInteger.Abs(b.Value))) * a.Value.Sign * b.Value.Sign;
     }
-    public bool Equals(ShortBigInteger other)
-    {
-        if (MaxValue != other.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return Value.Equals(other.Value);
-    }
-    public static ShortBigInteger operator ++(ShortBigInteger a) => new ShortBigInteger(a.MaxValue, a.Value + 1);
-    public static ShortBigInteger operator --(ShortBigInteger a) => new ShortBigInteger(a.MaxValue, a.Value - 1);
+    public bool Equals(ShortBigInteger other) => Value.Equals(other.Value);
+    public static ShortBigInteger operator ++(ShortBigInteger a) => new ShortBigInteger(a.Value + 1);
+    public static ShortBigInteger operator --(ShortBigInteger a) => new ShortBigInteger(a.Value - 1);
     public static ShortBigInteger operator +(ShortBigInteger a) => a;
-    public static ShortBigInteger operator -(ShortBigInteger a) => new ShortBigInteger(a.MaxValue, -a.Value);
-    public static ShortBigInteger operator +(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return new ShortBigInteger(a.MaxValue, a.Value + b.Value);
-    }
-    public static ShortBigInteger operator -(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return new ShortBigInteger(a.MaxValue, a + (-b)); ;
-    }
-    public static ShortBigInteger operator *(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return new ShortBigInteger(a.MaxValue, a.Value * b.Value);
-    }
+    public static ShortBigInteger operator -(ShortBigInteger a) => new ShortBigInteger(-a.Value);
+    public static ShortBigInteger operator +(ShortBigInteger a, ShortBigInteger b) => new ShortBigInteger(a.Value + b.Value);
+
+    public static ShortBigInteger operator -(ShortBigInteger a, ShortBigInteger b) => new ShortBigInteger(a + (-b));
+
+    public static ShortBigInteger operator *(ShortBigInteger a, ShortBigInteger b) => new ShortBigInteger(a.Value * b.Value);
+
     public static ShortBigInteger operator /(ShortBigInteger a, ShortBigInteger b)
     {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
         if (b.Value == 0)
         {
             throw new DivideByZeroException();
         }
-        return new ShortBigInteger(a.MaxValue, a.Value / b.Value);
+        return new ShortBigInteger(a.Value / b.Value);
     }
-    public static bool operator ==(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return a.Value == b.Value;
-    }
-    public static bool operator !=(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return a.Value != b.Value;
-    }
-    public static bool operator <(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return a.Value < b.Value;
-    }
-    public static bool operator >(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return a.Value > b.Value;
-    }
-    public static bool operator <=(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return a.Value <= b.Value;
-    }
-    public static bool operator >=(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (a.MaxValue != b.MaxValue)
-            throw new ArgumentException("ShortBigInteger has different max value");
-        return a.Value >= b.Value;
-    }
+    public static bool operator ==(ShortBigInteger a, ShortBigInteger b) => a.Value == b.Value;
+
+    public static bool operator !=(ShortBigInteger a, ShortBigInteger b) => a.Value != b.Value;
+
+    public static bool operator <(ShortBigInteger a, ShortBigInteger b) => a.Value < b.Value;
+
+    public static bool operator >(ShortBigInteger a, ShortBigInteger b) => a.Value > b.Value;
+
+    public static bool operator <=(ShortBigInteger a, ShortBigInteger b) => a.Value <= b.Value;
+
+    public static bool operator >=(ShortBigInteger a, ShortBigInteger b) => a.Value >= b.Value;
     public static implicit operator BigInteger(ShortBigInteger v) => v.Value;
     public static explicit operator string(ShortBigInteger v) => v.ToString();
     public static implicit operator ShortBigInteger(BigInteger v) => new ShortBigInteger(v);
@@ -188,7 +129,7 @@ public struct ShortBigInteger
             return result;
         }
         float.TryParse(line[0], out var valueResult);
-        return (BigInteger)(valueResult * DefaultMaxValue) * (BigInteger.Pow(DefaultMaxValue, GetSuffixNumber(line[1]) + 1) / DefaultMaxValue);
+        return (BigInteger)(valueResult * MaxValue) * (BigInteger.Pow(MaxValue, GetSuffixNumber(line[1]) + 1) / MaxValue);
     }
     public override int GetHashCode() => Value.GetHashCode();
     public override bool Equals(object obj) => obj is ShortBigInteger other && Equals(other);
