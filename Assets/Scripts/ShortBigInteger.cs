@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Linq;
 using System;
-
+using UnityEngine;
 public struct ShortBigInteger
 {
     public static readonly char[] Alphabet = "ABCDEFGHJK".ToCharArray();
@@ -27,7 +27,8 @@ public struct ShortBigInteger
         get => _maxValue;
         set
         {
-            _maxValue = value;
+
+            _maxValue = value == 0 ? DefaultMaxValue : value;
             GetNumber(this._value);
         }
     }
