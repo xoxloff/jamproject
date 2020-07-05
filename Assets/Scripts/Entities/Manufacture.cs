@@ -32,13 +32,9 @@ public class Manufacture : MonoBehaviour
 
     #region UI
     [SerializeField]
-    private Text productsNumberText;
+    private CustomSlider productsSlider;
     [SerializeField]
-    private FillLayer productsFillLayer;
-    [SerializeField]
-    private Text addingProductsNumberText;
-    [SerializeField]
-    private FillLayer addingProductsFillLayer;
+    private CustomSlider addingProductsSlider;
     #endregion
 
     public event EventHandler<ManufactureEventArgs> FactoryTextUpdate;
@@ -117,15 +113,15 @@ public class Manufacture : MonoBehaviour
     }
     public void UpdateTextFields()
     {
-        productsNumberText.text = workersNumber.ToString();
-        addingProductsNumberText.text = addingProducts.ToString();
+        productsSlider.Text.text = workersNumber.ToString();
+        addingProductsSlider.Text.text = addingProducts.ToString();
     }
 
     public void BuyWorker(ShortBigInteger workerNumber)
     {
         workersNumber += workerNumber;
         addingProducts = workersNumber * addingProductsNumber * productsRatio;
-        productsFillLayer.DrawLayer(ShortBigInteger.Division(workersNumber, scientificTrigger));
+        productsSlider.DrawLayer(ShortBigInteger.Division(workersNumber, scientificTrigger));
 
         if (workersNumber + 1 > scientificTrigger)
         {

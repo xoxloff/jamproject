@@ -34,6 +34,12 @@ public class PlayerInfo : MonoBehaviour
     private List<Quest> quests;
     [SerializeField]
     private Text purchaseModeText;
+    [SerializeField]
+    private Text mainCurrencyText;
+    [SerializeField]
+    private Text scientificCurrencyText;
+    [SerializeField]
+    private CustomSlider rankSlider;
 
     public PurchaseModeEnum PurchaseMode
     {
@@ -64,7 +70,10 @@ public class PlayerInfo : MonoBehaviour
     public ScientistCurrency ScientistCurrency
     {
         get => scientistCurrency;
-        set => scientistCurrency = value;
+        set {
+            scientistCurrency = value;
+            UpdateScientificCurrencyText();
+        }
     }
     public List<Scientist> Scientists
     {
@@ -85,18 +94,30 @@ public class PlayerInfo : MonoBehaviour
     private void Start()
     {
         PurchaseMode = PurchaseModeEnum.X100;
-        mainCurrency = new MainCurrency(100);
+        mainCurrency = new MainCurrency(0);
+        ScientistCurrency = new ScientistCurrency(0);
         purchaseModeText.text = GetPurchaseMode();
         foreach (var factory in factories)
         {
             factory.PlayerRef = this;
         }
+
+        StartCoroutine(updateMainCurrency());
+        UpdateRankSlider();
+    }
+
+    private void Update()
+    {
     }
 
     public void ClickPurchaseModeButton()
     {
         PurchaseMode = (PurchaseModeEnum)(((int)PurchaseMode + 1) % 4);
         purchaseModeText.text = GetPurchaseMode();
+    }
+    public void UpdateScientificCurrencyText()//Сделать евентом, вызывать при изменении
+    {
+        scientificCurrencyText.text = ScientistCurrency.Amount.ToString();
     }
 
     private string GetPurchaseMode()
@@ -115,4 +136,26 @@ public class PlayerInfo : MonoBehaviour
                 throw new FormatException();
         }
     }
+
+    private IEnumerator updateMainCurrency()
+    {
+        while (true)
+        {
+            MainCurrency.Amount++;
+            updateMainCurrencyText();
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private void updateMainCurrencyText()
+    {
+        mainCurrencyText.text = MainCurrency.Amount.ToString();
+    }
+
+    private void UpdateRankSlider()
+    {
+        rankSlider.Text.text = currentRankValue + "/" + RequiredRankValue;
+        rankSlider.DrawLayer((float)currentRankValue / (float)RequiredRankValue);
+    }
+
 }
