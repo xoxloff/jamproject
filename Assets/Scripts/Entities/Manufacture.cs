@@ -25,7 +25,7 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private ScientistCurrency scientistCurrency;
     [SerializeField]
-    private int scientificTrigger; //rename
+    private ShortBigInteger scientificTrigger; //rename
     [SerializeField]
     private Text productsNumberText;
     [SerializeField]
@@ -42,7 +42,7 @@ public class Manufacture : MonoBehaviour
 
     public void BtnClick(GameObject go)
     {
-        productsNumber.Amount+=1;
+        productsNumber.Amount+=productsRatio;
         productsNumberText.text = productsNumber.Amount.ToString();
 
         fillLayer.DrawLayer(ShortBigInteger.Division(productsNumber.Amount,scientificTrigger));
