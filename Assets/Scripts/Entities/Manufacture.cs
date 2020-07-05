@@ -42,9 +42,14 @@ public class Manufacture : MonoBehaviour
 
     public void BtnClick(GameObject go)
     {
-        productsNumber.Amount++;
+        productsNumber.Amount+=1;
         productsNumberText.text = productsNumber.Amount.ToString();
+
         fillLayer.DrawLayer(ShortBigInteger.Division(productsNumber.Amount,scientificTrigger));
+        if (productsNumber.Amount+1 > scientificTrigger)
+        {
+            scientificTrigger *= 10;
+        }
     }
 
 }
