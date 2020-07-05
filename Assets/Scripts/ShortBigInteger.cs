@@ -61,7 +61,7 @@ public struct ShortBigInteger
         }
 
         _suffix = GetSuffixLetter(suffixesCount - 1);
-        _shortValue = (float)Math.Exp(BigInteger.Log(BigInteger.Abs(num)) - BigInteger.Log(suffixesValue)) * num.Sign;
+        _shortValue = Division(num, suffixesValue);
         return _shortValue;
     }
     public static string GetSuffixLetter(int suffixNumber)
@@ -94,6 +94,10 @@ public struct ShortBigInteger
             }
         }
         return number;
+    }
+    public static float Division(ShortBigInteger a, ShortBigInteger b)
+    {
+        return (float)Math.Exp(BigInteger.Log(BigInteger.Abs(a.Value)) - BigInteger.Log(BigInteger.Abs(b.Value))) * a.Value.Sign * b.Value.Sign;
     }
     public bool Equals(ShortBigInteger other)
     {

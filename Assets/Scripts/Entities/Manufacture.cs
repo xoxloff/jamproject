@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,7 +44,7 @@ public class Manufacture : MonoBehaviour
     {
         productsNumber.Amount++;
         productsNumberText.text = productsNumber.Amount.ToString();
-        fillLayer.DrawLayer((float)(productsNumber.Amount / (ShortBigInteger)scientificTrigger).Value);
+        fillLayer.DrawLayer(ShortBigInteger.Division(productsNumber.Amount,scientificTrigger));
     }
 
 }
