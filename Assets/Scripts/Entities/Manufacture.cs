@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,17 +36,18 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private FillLayer addingProductsFillLayer;
 
-    private Product _kartoha; // remove
-    [SerializeField]
-    private Text _kartohaText;
+    private Factory factory;
+
+    public event EventHandler FactoryTextUpdate;
 
     public float ProductionTime { get=>productionTime; set=>productionTime=value; }
 
     private void Start()
     {
+        factory = GameObject.FindGameObjectWithTag("PotatoFactory").GetComponent<Factory>();
+
         productsNumber = new Product() { Amount = new ShortBigInteger(1)};
         addingProductsNumber = new Product() {Amount=new ShortBigInteger(50)};
-        _kartoha = new Product() {Name="Картоха", Amount= new ShortBigInteger(0) };
         productsNumberText.text = "1";
         addingProductsNumberText.text = "0";
         scientificTrigger = new ShortBigInteger(10);
@@ -54,15 +56,16 @@ public class Manufacture : MonoBehaviour
         UpdateTextFields();
     }
 
-    public void ProductBtnClick(GameObject go)
+    public void ProductBtnClick()
     {
-        _kartoha.Amount += addingProductsNumber.Amount;
+        factory.MainProduct.Amount += addingProductsNumber.Amount;
 
-        Debug.Log(_kartoha.Amount);
+        Debug.Log(factory.MainProduct.Amount);
         UpdateTextFields();
+        FactoryTextUpdate?.Invoke(this,EventArgs.Empty);
     }
 
-    public void BuyBtnClick(GameObject go)
+    public void BuyBtnClick()
     {
         productsNumber.Amount += 1;
         addingProductsNumber.Amount = productsNumber.Amount*addingProductsRatio;
@@ -81,7 +84,6 @@ public class Manufacture : MonoBehaviour
     {
         productsNumberText.text = productsNumber.Amount.ToString();
         addingProductsNumberText.text = addingProductsNumber.Amount.ToString();
-        _kartohaText.text = _kartoha.Amount.ToString();
     }
 
 }
