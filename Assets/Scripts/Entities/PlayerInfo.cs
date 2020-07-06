@@ -102,7 +102,7 @@ public class PlayerInfo : MonoBehaviour
             factory.PlayerRef = this;
         }
 
-        StartCoroutine(updateMainCurrency());
+        StartCoroutine(UpdateMainCurrency());
         UpdateRankSlider();
     }
 
@@ -114,6 +114,7 @@ public class PlayerInfo : MonoBehaviour
     {
         PurchaseMode = (PurchaseModeEnum)(((int)PurchaseMode + 1) % 4);
         purchaseModeText.text = GetPurchaseMode();
+        UpdateBuyButtonsText();
     }
     public void UpdateScientificCurrencyText()//Сделать евентом, вызывать при изменении
     {
@@ -137,19 +138,30 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
-    private IEnumerator updateMainCurrency()
+    private IEnumerator UpdateMainCurrency()
     {
         while (true)
         {
             MainCurrency.Amount++;
-            updateMainCurrencyText();
+            UpdateMainCurrencyText();
             yield return new WaitForSeconds(1f);
         }
     }
 
-    private void updateMainCurrencyText()
+    private void UpdateMainCurrencyText()
     {
         mainCurrencyText.text = MainCurrency.Amount.ToString();
+        UpdateBuyButtonsText();
+    }
+    private void UpdateBuyButtonsText()
+    {
+        foreach (var factory in Factories)
+        {
+            foreach (var manufacture in factory.Manufactures)
+            {
+                //factory.CheckManufacturePurchase(manufacture);
+            }
+        }
     }
 
     private void UpdateRankSlider()

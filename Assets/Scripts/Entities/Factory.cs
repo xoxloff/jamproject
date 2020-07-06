@@ -72,19 +72,15 @@ public class Factory : MonoBehaviour
         return manufacture;
     }
 
-    private void Manufacture_Buy(object sender, BuyEventArgs e)
+    public ShortBigInteger? CheckManufacturePurchase(Manufacture manufacture)
     {
-        var manufacture = sender as Manufacture;
-        if (manufacture == null)
-            return;
         var isBought = false;
         var count = new List<ShortBigInteger>();
-        var costCurrencies = new List<ICurrency>();
-        if (e.Currencies.Count == 0)
+        if (manufacture.Cost.Count == 0)
         {
             throw new Exception("empty cost");
         }
-        foreach (var currency in e.Currencies)
+        foreach (var currency in manufacture.Cost)
         {
 
             switch (currency)
@@ -113,27 +109,41 @@ public class Factory : MonoBehaviour
             }
             if (!isBought)
             {
-                return;
+                return null;
             }
         }
 
-        var min = (ShortBigInteger)count.Min(c => c.Value);
+        return count.Min(c => c.Value);
+    }
+    private void Manufacture_Buy(object sender, BuyEventArgs e)
+    {
+        var manufacture = sender as Manufacture;
+        if (manufacture == null)
+        {
+            return;
+        }
+
+        var minCostNumber = CheckManufacturePurchase(manufacture);
+        if (minCostNumber is null)
+        {
+            return;
+        }
         foreach (var currency in e.Currencies)
         {
             switch (currency)
             {
                 case MainCurrency c:
-                    PlayerRef.MainCurrency.Buy(min * c.Amount);
+                    PlayerRef.MainCurrency.Buy(minCostNumber.Value * c.Amount);
                     break;
                 case ScientistCurrency c:
-                    PlayerRef.ScientistCurrency.Buy(min * c.Amount);
+                    PlayerRef.ScientistCurrency.Buy(minCostNumber.Value * c.Amount);
                     break;
                 case Product c:
-                    Products[c.Id].Buy(min * c.Amount);
+                    Products[c.Id].Buy(minCostNumber.Value * c.Amount);
                     break;
             }
         }
-        manufacture.BuyWorker(min);
+        manufacture.BuyWorker(minCostNumber.Value);
         UpdateTextFields();
     }
 
@@ -158,7 +168,9 @@ public class Factory : MonoBehaviour
     {
         var manufacture = sender as Manufacture;
         if (manufacture == null)
+        {
             return;
+        }
 
         foreach (var m in Manufactures)
         {
