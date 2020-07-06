@@ -70,7 +70,8 @@ public class PlayerInfo : MonoBehaviour
     public ScientistCurrency ScientistCurrency
     {
         get => scientistCurrency;
-        set {
+        set
+        {
             scientistCurrency = value;
             UpdateScientificCurrencyText();
         }
@@ -159,7 +160,9 @@ public class PlayerInfo : MonoBehaviour
         {
             foreach (var manufacture in factory.Manufactures)
             {
-                //factory.CheckManufacturePurchase(manufacture);
+                var purchaseNumber = factory.CheckManufacturePurchase(manufacture);
+                var purchaseText = purchaseNumber == null ? "": purchaseNumber.ToString() ;
+                manufacture.PurchaseButtonText.text = "BUY x" + purchaseText;
             }
         }
     }

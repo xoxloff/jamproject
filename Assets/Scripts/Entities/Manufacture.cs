@@ -35,6 +35,7 @@ public class Manufacture : MonoBehaviour
     private CustomSlider productsSlider;
     [SerializeField]
     private CustomSlider addingProductsSlider;
+    public Text PurchaseButtonText;
     #endregion
 
     public event EventHandler<ManufactureEventArgs> FactoryTextUpdate;

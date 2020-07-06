@@ -309,6 +309,7 @@ MonoBehaviour:
   scientistCurrency: {fileID: 0}
   productsSlider: {fileID: 2777516963497604507}
   addingProductsSlider: {fileID: 2530486726346576388}
+  PurchaseButtonText: {fileID: 3305991213203726203}
 --- !u!1 &5403297586023994236
 GameObject:
   m_ObjectHideFlags: 0

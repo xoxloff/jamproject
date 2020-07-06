@@ -3653,7 +3653,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100.5
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 2
+  m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 88.1
