@@ -12,6 +12,7 @@ public class CustomSlider : MonoBehaviour
     private float ratio;
 
     public Text Text { get=>text; set=>text=value; }
+    public RectTransform FillLayer { get => fillLayer; set => fillLayer = value; }
     // Start is called before the first frame update
     void Start()
     {

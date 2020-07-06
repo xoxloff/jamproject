@@ -36,7 +36,7 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField]
     private Text purchaseModeText;
     [SerializeField]
-    private Text mainCurrencyText;
+    private CustomSlider mainCurrencySlider;
     [SerializeField]
     private CustomSlider scientificCurrencySlider;
     [SerializeField]
@@ -178,7 +178,7 @@ public class PlayerInfo : MonoBehaviour
 
     private void UpdateMainCurrencyText()
     {
-        mainCurrencyText.text = MainCurrency.Amount.ToString();
+        mainCurrencySlider.Text.text = MainCurrency.Amount.ToString();
         UpdateBuyButtonsText();
     }
     private void UpdateBuyButtonsText()
