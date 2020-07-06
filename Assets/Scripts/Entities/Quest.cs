@@ -20,4 +20,14 @@ public class Quest : MonoBehaviour
     [SerializeField]
     private List<Award> awards;
 
+    #region UI
+    public Text Description;
+    public Text CurrentProcess;
+    #endregion
+
+
+    public void ClickQuestButton()
+    {
+
+    }
 }
