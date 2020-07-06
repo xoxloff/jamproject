@@ -1,10 +1,11 @@
 ﻿using UnityEngine.UI;
 public enum CurrencyType
 {
-    main,
-    scientific,
-    potata,
-    bus
+    Main,
+    Scientific,
+    Potato,
+    Farmer,
+    Tent,
 }
 public interface ICurrency
 {

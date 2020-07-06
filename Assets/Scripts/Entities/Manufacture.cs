@@ -10,7 +10,7 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private Product product;
     [SerializeField]
-    private ShortBigInteger workersNumber;
+    private Product workers;
     [SerializeField]
     private ShortBigInteger addingProducts;
     [SerializeField]
@@ -21,8 +21,6 @@ public class Manufacture : MonoBehaviour
     private float productionTime;
     [SerializeField]
     private float timeRatio;
-    [SerializeField]
-    private List<ICurrency> cost;
     [SerializeField]
     private Scientist scientist;
     [SerializeField]
@@ -53,10 +51,10 @@ public class Manufacture : MonoBehaviour
         get => productionTime;
         set => productionTime = value;
     }
-    public ShortBigInteger WorkersNumber
+    public Product Workers
     {
-        get => workersNumber;
-        set => workersNumber = value;
+        get => workers;
+        set => workers = value;
     }
     public ShortBigInteger AddingProducts
     {
@@ -77,11 +75,6 @@ public class Manufacture : MonoBehaviour
     {
         get => timeRatio;
         set => timeRatio = value;
-    }
-    public List<ICurrency> Cost
-    {
-        get => cost;
-        set => cost = value;
     }
     public Scientist Scientist
     {
@@ -105,7 +98,7 @@ public class Manufacture : MonoBehaviour
         ScientistCurrencyUpdate = new ScientistCurrency(0);
         ScientificTrigger = (ShortBigInteger)"10";
         scientificTriggerBorder = (ShortBigInteger)"1";
-        addingProducts = workersNumber * addingProductsNumber * productsRatio;
+        addingProducts = Workers.Amount * addingProductsNumber * productsRatio;
         UpdateTextFields();
     }
 
@@ -117,11 +110,11 @@ public class Manufacture : MonoBehaviour
     }
     public void BuyBtnClick()
     {
-        Buy?.Invoke(this, new BuyEventArgs(Cost));
+        Buy?.Invoke(this, new BuyEventArgs(workers.Cost));
     }
     public void UpdateTextFields()
     {
-        productsSlider.Text.text = workersNumber.ToString();
+        productsSlider.Text.text = Workers.Amount.ToString();
         addingProductsSlider.Text.text = addingProducts.ToString();
     }
 
@@ -132,9 +125,9 @@ public class Manufacture : MonoBehaviour
 
     public void BuyWorker(ShortBigInteger workerNumber)
     {
-        workersNumber += workerNumber;
-        addingProducts = workersNumber * addingProductsNumber * productsRatio;
-        productsSlider.DrawLayer(ShortBigInteger.Division(workersNumber, scientificTrigger));
+        Workers.Amount += workerNumber;
+        addingProducts = Workers.Amount * addingProductsNumber * productsRatio;
+        productsSlider.DrawLayer(ShortBigInteger.Division(Workers.Amount, scientificTrigger));
 
         CheckScientificTrigger();
         UpdateTextFields();
@@ -142,7 +135,7 @@ public class Manufacture : MonoBehaviour
 
     private void CheckScientificTrigger()
     {
-        var workers = workersNumber;
+        var workers = Workers.Amount;
         if (workers >= ScientificTrigger)
         {
             var scientificCurrencyCount = 0;

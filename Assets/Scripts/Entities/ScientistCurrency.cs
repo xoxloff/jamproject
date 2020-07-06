@@ -49,6 +49,6 @@ public class ScientistCurrency : MonoBehaviour, ICurrency
     {
         this.name = "Scientist";
         this.amount = amount;
-        this.type = CurrencyType.scientific;
+        this.type = CurrencyType.Scientific;
     }
 }

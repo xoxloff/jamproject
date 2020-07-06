@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +17,8 @@ public class Product : MonoBehaviour, ICurrency
     private ShortBigInteger amount;
     [SerializeField]
     private CurrencyType type;
+    [SerializeField]
+    private List<ICurrency> cost;
 
     public int Id
     {
@@ -41,6 +45,11 @@ public class Product : MonoBehaviour, ICurrency
         get => amount;
         set => amount = value;
     }
+    public List<ICurrency> Cost
+    {
+        get => cost;
+        set => cost = value;
+    }
 
     public bool Check(ShortBigInteger cost) => Amount >= cost;
 
@@ -52,12 +61,15 @@ public class Product : MonoBehaviour, ICurrency
         }
     }
 
-    public Product(int id, Image image, string name, ShortBigInteger amount, CurrencyType type)
+    
+    public Product(int id, Image image, string name, ShortBigInteger amount, CurrencyType type, List<ICurrency> cost)
     {
-        this.id = id;
-        this.image = image;
-        this.name = name;
-        this.amount = amount;
-        this.type = type;
+        Id = id;
+        Image = image;
+        Name = name;
+        Amount = amount;
+        Type = type;
+        Cost = cost;
     }
+    public static Product GetCostValue(Product product, ShortBigInteger amount) => new Product(product.Id, product.Image, product.Name, amount, product.Type, product.Cost);
 }
