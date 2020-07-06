@@ -37,9 +37,11 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField]
     private Text mainCurrencyText;
     [SerializeField]
-    private Text scientificCurrencyText;
+    private CustomSlider scientificCurrencySlider;
     [SerializeField]
     private CustomSlider rankSlider;
+
+    bool ScientificCurrencySubscribeFlag = false;
 
     public PurchaseModeEnum PurchaseMode
     {
@@ -92,10 +94,11 @@ public class PlayerInfo : MonoBehaviour
         set => quests = value;
     }
 
+
     private void Start()
     {
         PurchaseMode = PurchaseModeEnum.X100;
-        mainCurrency = new MainCurrency(0);
+        mainCurrency = new MainCurrency(10000);
         ScientistCurrency = new ScientistCurrency(0);
         purchaseModeText.text = GetPurchaseMode();
         foreach (var factory in factories)
@@ -104,14 +107,14 @@ public class PlayerInfo : MonoBehaviour
             factory.PlayerTextUpdate += Factory_PlayerTextUpdate;
         }
 
-        SubscribeScientificCurrencyFromManufacture();
-
         StartCoroutine(UpdateMainCurrency());
         UpdateRankSlider();
     }
 
     private void Update()
     {
+        if (!ScientificCurrencySubscribeFlag)
+            SubscribeScientificCurrencyFromManufacture();
     }
 
     public void ClickPurchaseModeButton()
@@ -122,7 +125,7 @@ public class PlayerInfo : MonoBehaviour
     }
     public void UpdateScientificCurrencyText()//Сделать евентом, вызывать при изменении
     {
-        scientificCurrencyText.text = ScientistCurrency.Amount.ToString();
+        scientificCurrencySlider.Text.text = ScientistCurrency.Amount.ToString();
     }
 
     private string GetPurchaseMode()
@@ -176,7 +179,8 @@ public class PlayerInfo : MonoBehaviour
         {
             foreach (var manufacture in factory.Manufactures)
             {
-                manufacture.ScientificCurrencyUpdate += Manufacture_ScientificCurrencyUpdate; 
+                manufacture.ScientificCurrencyUpdate += Manufacture_ScientificCurrencyUpdate;
+                ScientificCurrencySubscribeFlag = true;
             }
         }
     }
