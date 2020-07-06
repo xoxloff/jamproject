@@ -10,7 +10,7 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private Product product;
     [SerializeField]
-    private ShortBigInteger workersNumber;
+    private Product workers;
     [SerializeField]
     private ShortBigInteger addingProducts;
     [SerializeField]
@@ -21,8 +21,6 @@ public class Manufacture : MonoBehaviour
     private float productionTime;
     [SerializeField]
     private float timeRatio;
-    [SerializeField]
-    private List<ICurrency> cost;
     [SerializeField]
     private Scientist scientist;
     [SerializeField]
@@ -50,10 +48,10 @@ public class Manufacture : MonoBehaviour
         get => productionTime;
         set => productionTime = value;
     }
-    public ShortBigInteger WorkersNumber
+    public Product Workers
     {
-        get => workersNumber;
-        set => workersNumber = value;
+        get => workers;
+        set => workers = value;
     }
     public ShortBigInteger AddingProducts
     {
@@ -75,11 +73,6 @@ public class Manufacture : MonoBehaviour
         get => timeRatio;
         set => timeRatio = value;
     }
-    public List<ICurrency> Cost
-    {
-        get => cost;
-        set => cost = value;
-    }
     public Scientist Scientist
     {
         get => scientist;
@@ -98,7 +91,7 @@ public class Manufacture : MonoBehaviour
 
     private void Start()
     {
-        addingProducts = workersNumber * addingProductsNumber * productsRatio;
+        addingProducts = Workers.Amount * addingProductsNumber * productsRatio;
         UpdateTextFields();
     }
 
@@ -110,21 +103,21 @@ public class Manufacture : MonoBehaviour
     }
     public void BuyBtnClick()
     {
-        Buy?.Invoke(this, new BuyEventArgs(Cost));
+        Buy?.Invoke(this, new BuyEventArgs(workers.Cost));
     }
     public void UpdateTextFields()
     {
-        productsSlider.Text.text = workersNumber.ToString();
+        productsSlider.Text.text = Workers.Amount.ToString();
         addingProductsSlider.Text.text = addingProducts.ToString();
     }
 
     public void BuyWorker(ShortBigInteger workerNumber)
     {
-        workersNumber += workerNumber;
-        addingProducts = workersNumber * addingProductsNumber * productsRatio;
-        productsSlider.DrawLayer(ShortBigInteger.Division(workersNumber, scientificTrigger));
+        Workers.Amount += workerNumber;
+        addingProducts = Workers.Amount * addingProductsNumber * productsRatio;
+        productsSlider.DrawLayer(ShortBigInteger.Division(Workers.Amount, scientificTrigger));
 
-        if (workersNumber + 1 > scientificTrigger)
+        if (Workers.Amount + 1 > scientificTrigger)
         {
             scientificTrigger *= 10;
         }

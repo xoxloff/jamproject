@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Numerics;
 using System.Xml.Serialization;
 using UnityEngine;
@@ -46,32 +47,35 @@ public class Factory : MonoBehaviour
     void Start()
     {
         products = new List<Product>();
-        MainProduct = AddProduct("Potata", null, CurrencyType.potata);
+        Manufactures = new List<Manufacture>();
+        MainProduct = AddProduct("Potata",
+                                null,
+                                CurrencyType.Potato,
+                                new MainCurrency(1));
         products.Add(MainProduct);
-        Manufactures = new List<Manufacture>
-        {
-            AddManufacture(MainProduct)
-        };
+        products.Add(AddProduct("Farmer",
+                    null,
+                    CurrencyType.Farmer,
+                    new MainCurrency(1),
+                    Product.GetCostValue(MainProduct, 1)));
+        //products.Add(AddProduct("Some", null, CurrencyType.bus, new MainCurrency(1), Product.GetCostValue(Products[Products.Count - 1], (Products.Count - 1) * 1.5f)));
+        Products[1].Amount = 1;
+        Manufactures.Add(AddManufacture(MainProduct, Products[1]));
+        // AddManufacture(products[1])
     }
 
-    public Product AddProduct(string name, Image image, CurrencyType type) => new Product(products.Count, image, name, 0, type);
+    public Product AddProduct(string name, Image image, CurrencyType type, params ICurrency[] cost) => new Product(products.Count, image, name, 0, type, cost.ToList());
 
-    public Manufacture AddManufacture(Product currency)
+    public Manufacture AddManufacture(Product currency, Product workerProduct)
     {
         var manufacture = Instantiate(manufacturePrefab, manufactureContainer.transform).GetComponent<Manufacture>();
-        manufacture.WorkersNumber = 1;
+        manufacture.Workers = workerProduct;
         manufacture.ScientificTrigger = new ShortBigInteger(10);
         manufacture.ProductsRatio = "1";
         manufacture.AddingProductsNumber = 50;
         manufacture.Product = currency;
         manufacture.FactoryTextUpdate += Factory_FactoryTextUpdate;
-        manufacture.Buy += Manufacture_Buy; ;
-        manufacture.Cost = new List<ICurrency>
-        {
-            new MainCurrency(1),
-            new Product(currency.Id, currency.Image, currency.Name, 1, currency.Type)
-        };
-
+        manufacture.Buy += Manufacture_Buy;
         return manufacture;
     }
 
@@ -79,11 +83,11 @@ public class Factory : MonoBehaviour
     {
         var isBought = false;
         var count = new List<ShortBigInteger>();
-        if (manufacture.Cost.Count == 0)
+        if (manufacture.Workers.Cost.Count == 0)
         {
             throw new Exception("empty cost");
         }
-        foreach (var currency in manufacture.Cost)
+        foreach (var currency in manufacture.Workers.Cost)
         {
 
             switch (currency)
@@ -91,22 +95,31 @@ public class Factory : MonoBehaviour
                 case MainCurrency c:
                     {
                         var cost = GetPurchaseValue(c.Amount, PlayerRef.MainCurrency.Amount);
-                        count.Add(cost);
                         isBought = PlayerRef.MainCurrency.Check(cost * c.Amount);
+                        if (isBought)
+                        {
+                            count.Add(cost);
+                        }
                         break;
                     }
                 case ScientistCurrency c:
                     {
                         var cost = GetPurchaseValue(c.Amount, PlayerRef.ScientistCurrency.Amount);
-                        count.Add(cost);
                         isBought = PlayerRef.ScientistCurrency.Check(cost * c.Amount);
+                        if (isBought)
+                        {
+                            count.Add(cost);
+                        }
                         break;
                     }
                 case Product c:
                     {
                         var cost = GetPurchaseValue(c.Amount, Products[c.Id].Amount);
-                        count.Add(cost);
                         isBought = Products[c.Id].Check(cost * c.Amount);
+                        if (isBought)
+                        {
+                            count.Add(cost);
+                        }
                         break;
                     }
             }
@@ -123,13 +136,32 @@ public class Factory : MonoBehaviour
         switch (PlayerRef.PurchaseMode)
         {
             case PlayerInfo.PurchaseModeEnum.X1:
-                return 1;
+                {
+                    return 1;
+                }
             case PlayerInfo.PurchaseModeEnum.X10:
-                return (max / 10) / cost;
+                {
+                    var num = (max / 10);
+                    if (num == 0)
+                    {
+                        goto case PlayerInfo.PurchaseModeEnum.X1;
+                    }
+                    return num;
+                }
             case PlayerInfo.PurchaseModeEnum.X50:
-                return (max / 2) / cost;
+                {
+                    var num = (max / 2) / cost;
+                    if (num == 0)
+                    {
+                        goto case PlayerInfo.PurchaseModeEnum.X10;
+                    }
+                    return num;
+                }
             case PlayerInfo.PurchaseModeEnum.X100:
-                return max / cost;
+                {
+                    var num = max / cost;
+                    return num;
+                }
             default:
                 throw new ArgumentOutOfRangeException();
         }
