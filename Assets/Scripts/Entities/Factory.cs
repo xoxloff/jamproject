@@ -46,6 +46,12 @@ public class Factory : MonoBehaviour
 
     public event EventHandler<AddCurrencyEventArgs> ScientificCurrencyUpdate;
 
+    public Factory()
+    {
+        
+        // AddManufacture(products[1])
+    }
+
     void Start()
     {
         products = new List<Product>();
@@ -63,11 +69,6 @@ public class Factory : MonoBehaviour
         //products.Add(AddProduct("Some", null, CurrencyType.bus, new MainCurrency(1), Product.GetCostValue(Products[Products.Count - 1], (Products.Count - 1) * 1.5f)));
         Products[1].Amount = 1;
         Manufactures.Add(AddManufacture(MainProduct, Products[1]));
-        // AddManufacture(products[1])
-
-
-
-        Debug.Log("Factory added");
     }
 
     public Product AddProduct(string name, Image image, CurrencyType type, params ICurrency[] cost) => new Product(products.Count, image, name, 0, type, cost.ToList());

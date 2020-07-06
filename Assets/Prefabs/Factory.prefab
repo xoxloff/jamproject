@@ -313,10 +313,10 @@ MonoBehaviour:
   mainProduct: {fileID: 0}
   manufactures: []
   products: []
-  manufacturePrefab: {fileID: 0}
-  manufactureContainer: {fileID: 0}
-  factoryText: {fileID: 0}
-  purchaseModeText: {fileID: 0}
+  manufacturePrefab: {fileID: 4772616094486894938, guid: 836de133d8322914fa18fdded0080be8,
+    type: 3}
+  manufactureContainer: {fileID: 2192803230562655263}
+  factoryText: {fileID: 2192803232364892680}
 --- !u!1 &2192803232364892682
 GameObject:
   m_ObjectHideFlags: 0

@@ -42,16 +42,28 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField]
     private CustomSlider rankSlider;
 
+    [SerializeField]
+    private GameObject questPrefab;
+    [SerializeField]
+    private GameObject questContainer;
+
+    [SerializeField]
+    private GameObject factoryPrefab;
+    [SerializeField]
+    private GameObject factoryContainer;
+
     public PurchaseModeEnum PurchaseMode
     {
         get => purchaseMode;
         set => purchaseMode = value;
     }
+
     public int Rank
     {
         get => rank;
         set => rank = value;
     }
+
     public int CurrentRankValue
     {
         get => currentRankValue;
@@ -68,6 +80,7 @@ public class PlayerInfo : MonoBehaviour
         get => mainCurrency;
         set => mainCurrency = value;
     }
+
     public ScientistCurrency ScientistCurrency
     {
         get => scientistCurrency;
@@ -77,16 +90,19 @@ public class PlayerInfo : MonoBehaviour
             UpdateScientificCurrencyText();
         }
     }
+
     public List<Scientist> Scientists
     {
         get => scientists;
         set => scientists = value;
     }
+
     public List<Factory> Factories
     {
         get => factories;
         set => factories = value;
     }
+
     public List<Quest> Quests
     {
         get => quests;
@@ -98,10 +114,11 @@ public class PlayerInfo : MonoBehaviour
 
     }
 
-
     private void Start()
     {
-        PurchaseMode = PurchaseModeEnum.X100;
+        Factory newFactory = Instantiate(factoryPrefab, factoryContainer.transform).GetComponent<Factory>();
+        Factories.Add(newFactory);
+        PurchaseMode = PurchaseModeEnum.X1;
         mainCurrency = new MainCurrency(0);
         ScientistCurrency = new ScientistCurrency(0);
         purchaseModeText.text = GetPurchaseMode();
@@ -127,7 +144,7 @@ public class PlayerInfo : MonoBehaviour
         purchaseModeText.text = GetPurchaseMode();
         UpdateBuyButtonsText();
     }
-    public void UpdateScientificCurrencyText() //Сделать евентом, вызывать при изменении
+    public void UpdateScientificCurrencyText()
     {
         scientificCurrencySlider.Text.text = ScientistCurrency.Amount.ToString();
     }
