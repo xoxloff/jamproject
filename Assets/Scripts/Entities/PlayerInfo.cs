@@ -101,6 +101,7 @@ public class PlayerInfo : MonoBehaviour
         foreach (var factory in factories)
         {
             factory.PlayerRef = this;
+            factory.PlayerTextUpdate += Factory_PlayerTextUpdate;
         }
 
         StartCoroutine(UpdateMainCurrency());
@@ -161,8 +162,8 @@ public class PlayerInfo : MonoBehaviour
             foreach (var manufacture in factory.Manufactures)
             {
                 var purchaseNumber = factory.CheckManufacturePurchase(manufacture);
-                var purchaseText = purchaseNumber == null ? "": purchaseNumber.ToString() ;
-                manufacture.PurchaseButtonText.text = "BUY x" + purchaseText;
+                var purchaseText = purchaseNumber == null ? "x0" : $"x{purchaseNumber}";
+                manufacture.PurchaseButtonText.text = $"BUY {purchaseText}";
             }
         }
     }
@@ -171,6 +172,11 @@ public class PlayerInfo : MonoBehaviour
     {
         rankSlider.Text.text = currentRankValue + "/" + RequiredRankValue;
         rankSlider.DrawLayer((float)currentRankValue / (float)RequiredRankValue);
+    }
+
+    private void Factory_PlayerTextUpdate(object sender, EventArgs e)
+    {
+        UpdateMainCurrencyText();
     }
 
 }
