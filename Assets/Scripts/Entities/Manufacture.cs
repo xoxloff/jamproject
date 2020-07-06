@@ -39,7 +39,7 @@ public class Manufacture : MonoBehaviour
     #endregion
 
     public event EventHandler<ManufactureEventArgs> FactoryTextUpdate;
-    public event EventHandler<ManufactureEventArgs> ScientificCurrencyUpdate;
+    public event EventHandler<AddCurrencyEventArgs> ScientificCurrencyUpdate;
     public event EventHandler<BuyEventArgs> Buy;
     public Product Product
     {
@@ -120,7 +120,7 @@ public class Manufacture : MonoBehaviour
 
     public void UpdateScientificCurrency(ShortBigInteger value)
     {
-        ScientificCurrencyUpdate?.Invoke(this, new ManufactureEventArgs(value));
+        ScientificCurrencyUpdate?.Invoke(this, new AddCurrencyEventArgs(value));
     }
 
     public void BuyWorker(ShortBigInteger workerNumber)
@@ -151,8 +151,6 @@ public class Manufacture : MonoBehaviour
             UpdateScientificCurrency(scientistCurrency.Amount);
             scientistCurrency.Amount = 0;
         }
-
-        Debug.Log(ScientistCurrencyUpdate.Amount);
     }
 
 }

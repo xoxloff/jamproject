@@ -181,9 +181,9 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
-    private void Manufacture_ScientificCurrencyUpdate(object sender, ManufactureEventArgs e)
+    private void Manufacture_ScientificCurrencyUpdate(object sender, AddCurrencyEventArgs e)
     {
-        ScientistCurrency.Amount += e.addingProductsNumber;
+        ScientistCurrency.Amount += e.AddingCurrency;
         UpdateScientificCurrencyText();
     }
 
