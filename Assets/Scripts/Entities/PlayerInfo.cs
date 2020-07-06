@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,8 +41,6 @@ public class PlayerInfo : MonoBehaviour
     private CustomSlider scientificCurrencySlider;
     [SerializeField]
     private CustomSlider rankSlider;
-
-    bool ScientificCurrencySubscribeFlag = false;
 
     public PurchaseModeEnum PurchaseMode
     {
@@ -94,17 +93,23 @@ public class PlayerInfo : MonoBehaviour
         set => quests = value;
     }
 
+    public PlayerInfo()
+    {
+
+    }
+
 
     private void Start()
     {
         PurchaseMode = PurchaseModeEnum.X100;
-        mainCurrency = new MainCurrency(10000);
+        mainCurrency = new MainCurrency(0);
         ScientistCurrency = new ScientistCurrency(0);
         purchaseModeText.text = GetPurchaseMode();
-        foreach (var factory in factories)
+        foreach (var factory in Factories)
         {
             factory.PlayerRef = this;
             factory.PlayerTextUpdate += Factory_PlayerTextUpdate;
+            factory.ScientificCurrencyUpdate += Manufacture_ScientificCurrencyUpdate;
         }
 
         StartCoroutine(UpdateMainCurrency());
@@ -113,8 +118,7 @@ public class PlayerInfo : MonoBehaviour
 
     private void Update()
     {
-        if (!ScientificCurrencySubscribeFlag)
-            SubscribeScientificCurrencyFromManufacture();
+
     }
 
     public void ClickPurchaseModeButton()
@@ -123,7 +127,7 @@ public class PlayerInfo : MonoBehaviour
         purchaseModeText.text = GetPurchaseMode();
         UpdateBuyButtonsText();
     }
-    public void UpdateScientificCurrencyText()//Сделать евентом, вызывать при изменении
+    public void UpdateScientificCurrencyText() //Сделать евентом, вызывать при изменении
     {
         scientificCurrencySlider.Text.text = ScientistCurrency.Amount.ToString();
     }
@@ -169,18 +173,6 @@ public class PlayerInfo : MonoBehaviour
                 var purchaseNumber = factory.CheckManufacturePurchase(manufacture);
                 var purchaseText = purchaseNumber == null ? "x0" : $"x{purchaseNumber}";
                 manufacture.PurchaseButtonText.text = $"BUY {purchaseText}";
-            }
-        }
-    }
-
-    private void SubscribeScientificCurrencyFromManufacture()
-    {
-        foreach (var factory in Factories)
-        {
-            foreach (var manufacture in factory.Manufactures)
-            {
-                manufacture.ScientificCurrencyUpdate += Manufacture_ScientificCurrencyUpdate;
-                ScientificCurrencySubscribeFlag = true;
             }
         }
     }

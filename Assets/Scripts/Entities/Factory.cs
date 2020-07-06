@@ -44,6 +44,8 @@ public class Factory : MonoBehaviour
 
     public event EventHandler<EventArgs> PlayerTextUpdate;
 
+    public event EventHandler<AddCurrencyEventArgs> ScientificCurrencyUpdate;
+
     void Start()
     {
         products = new List<Product>();
@@ -62,6 +64,10 @@ public class Factory : MonoBehaviour
         Products[1].Amount = 1;
         Manufactures.Add(AddManufacture(MainProduct, Products[1]));
         // AddManufacture(products[1])
+
+
+
+        Debug.Log("Factory added");
     }
 
     public Product AddProduct(string name, Image image, CurrencyType type, params ICurrency[] cost) => new Product(products.Count, image, name, 0, type, cost.ToList());
@@ -76,9 +82,9 @@ public class Factory : MonoBehaviour
         manufacture.Product = currency;
         manufacture.FactoryTextUpdate += Factory_FactoryTextUpdate;
         manufacture.Buy += Manufacture_Buy;
+        manufacture.ScientificCurrencyUpdate += Factory_ScientificCurrencyUpdate;
         return manufacture;
     }
-
     public ShortBigInteger? CheckManufacturePurchase(Manufacture manufacture)
     {
         var isBought = false;
@@ -160,12 +166,17 @@ public class Factory : MonoBehaviour
             case PlayerInfo.PurchaseModeEnum.X100:
                 {
                     var num = max / cost;
+                    if (num == 0)
+                    {
+                        goto case PlayerInfo.PurchaseModeEnum.X50;
+                    }
                     return num;
                 }
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
+
     private void Manufacture_Buy(object sender, BuyEventArgs e)
     {
         var manufacture = sender as Manufacture;
@@ -197,7 +208,6 @@ public class Factory : MonoBehaviour
         manufacture.BuyWorker(minCostNumber.Value);
         UpdateTextFields();
     }
-
     private void Factory_FactoryTextUpdate(object sender, ManufactureEventArgs e)
     {
         var manufacture = sender as Manufacture;
@@ -212,6 +222,10 @@ public class Factory : MonoBehaviour
         }
 
         UpdateTextFields();
+    }
+    private void Factory_ScientificCurrencyUpdate(object sender, AddCurrencyEventArgs e)
+    {
+        ScientificCurrencyUpdate?.Invoke(sender, e);
     }
 
     private void UpdateTextFields()

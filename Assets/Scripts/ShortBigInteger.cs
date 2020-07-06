@@ -90,29 +90,14 @@ public struct ShortBigInteger
     public static ShortBigInteger operator +(ShortBigInteger a) => a;
     public static ShortBigInteger operator -(ShortBigInteger a) => new ShortBigInteger(-a.Value);
     public static ShortBigInteger operator +(ShortBigInteger a, ShortBigInteger b) => new ShortBigInteger(a.Value + b.Value);
-
     public static ShortBigInteger operator -(ShortBigInteger a, ShortBigInteger b) => new ShortBigInteger(a + (-b));
-
     public static ShortBigInteger operator *(ShortBigInteger a, ShortBigInteger b) => new ShortBigInteger(a.Value * b.Value);
-
-    public static ShortBigInteger operator /(ShortBigInteger a, ShortBigInteger b)
-    {
-        if (b.Value == 0)
-        {
-            throw new DivideByZeroException();
-        }
-        return new ShortBigInteger(a.Value / b.Value);
-    }
+    public static ShortBigInteger operator /(ShortBigInteger a, ShortBigInteger b) => new ShortBigInteger(a.Value / b.Value);
     public static bool operator ==(ShortBigInteger a, ShortBigInteger b) => a.Value == b.Value;
-
     public static bool operator !=(ShortBigInteger a, ShortBigInteger b) => a.Value != b.Value;
-
     public static bool operator <(ShortBigInteger a, ShortBigInteger b) => a.Value < b.Value;
-
     public static bool operator >(ShortBigInteger a, ShortBigInteger b) => a.Value > b.Value;
-
     public static bool operator <=(ShortBigInteger a, ShortBigInteger b) => a.Value <= b.Value;
-
     public static bool operator >=(ShortBigInteger a, ShortBigInteger b) => a.Value >= b.Value;
     public static implicit operator BigInteger(ShortBigInteger v) => v.Value;
     public static explicit operator string(ShortBigInteger v) => v.ToString();
