@@ -26,8 +26,27 @@ public class Quest : MonoBehaviour
     #endregion
 
 
+    private void Start()
+    {
+        currentAmount = (ShortBigInteger)"30 B";
+        requiredAmount = (ShortBigInteger)"50 B";
+
+        UpdateTextFields();
+    }
+
+    private void Update()
+    {
+        
+    }
+
     public void ClickQuestButton()
     {
+        //Reminder: Нажимается только тогда, когда выполнено условие current>=required
+    }
 
+    private void UpdateTextFields()
+    {
+        Description.text = "Desc";
+        CurrentProcess.text = currentAmount.ToString() + "/" + requiredAmount.ToString();
     }
 }
