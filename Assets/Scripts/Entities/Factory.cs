@@ -40,6 +40,9 @@ public class Factory : MonoBehaviour
         set => products = value;
     }
 
+
+    public event EventHandler<EventArgs> PlayerTextUpdate;
+
     void Start()
     {
         products = new List<Product>();
@@ -115,6 +118,22 @@ public class Factory : MonoBehaviour
 
         return count.Min(c => c.Value);
     }
+    private ShortBigInteger GetPurchaseValue(ShortBigInteger cost, ShortBigInteger max)
+    {
+        switch (PlayerRef.PurchaseMode)
+        {
+            case PlayerInfo.PurchaseModeEnum.X1:
+                return 1;
+            case PlayerInfo.PurchaseModeEnum.X10:
+                return (max / 10) / cost;
+            case PlayerInfo.PurchaseModeEnum.X50:
+                return (max / 2) / cost;
+            case PlayerInfo.PurchaseModeEnum.X100:
+                return max / cost;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
     private void Manufacture_Buy(object sender, BuyEventArgs e)
     {
         var manufacture = sender as Manufacture;
@@ -147,23 +166,6 @@ public class Factory : MonoBehaviour
         UpdateTextFields();
     }
 
-    private ShortBigInteger GetPurchaseValue(ShortBigInteger cost, ShortBigInteger max)
-    {
-        switch (PlayerRef.PurchaseMode)
-        {
-            case PlayerInfo.PurchaseModeEnum.X1:
-                return 1;
-            case PlayerInfo.PurchaseModeEnum.X10:
-                return (max / 10) / cost;
-            case PlayerInfo.PurchaseModeEnum.X50:
-                return (max / 2) / cost;
-            case PlayerInfo.PurchaseModeEnum.X100:
-                return max / cost;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-
     private void Factory_FactoryTextUpdate(object sender, ManufactureEventArgs e)
     {
         var manufacture = sender as Manufacture;
@@ -183,5 +185,6 @@ public class Factory : MonoBehaviour
     private void UpdateTextFields()
     {
         factoryText.text = MainProduct.Amount.ToString();
+        PlayerTextUpdate?.Invoke(this, EventArgs.Empty);
     }
 }
