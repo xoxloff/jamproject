@@ -29,6 +29,8 @@ public class Manufacture : MonoBehaviour
     private ScientistCurrency scientistCurrency;
     [SerializeField]
     private ShortBigInteger scientificTrigger; //rename
+    [SerializeField]
+    private ShortBigInteger scientificTriggerBorder; //rename
 
     #region UI
     [SerializeField]
@@ -39,6 +41,7 @@ public class Manufacture : MonoBehaviour
     #endregion
 
     public event EventHandler<ManufactureEventArgs> FactoryTextUpdate;
+    public event EventHandler<ManufactureEventArgs> ScientificCurrencyUpdate;
     public event EventHandler<BuyEventArgs> Buy;
     public Product Product
     {
@@ -85,11 +88,12 @@ public class Manufacture : MonoBehaviour
         get => scientist;
         set => scientist = value;
     }
-    public ScientistCurrency ScientistCurrency
+    public ScientistCurrency ScientistCurrencyUpdate
     {
         get => scientistCurrency;
         set => scientistCurrency = value;
     }
+
     public ShortBigInteger ScientificTrigger
     {
         get => scientificTrigger;
@@ -98,6 +102,9 @@ public class Manufacture : MonoBehaviour
 
     private void Start()
     {
+        ScientistCurrencyUpdate = new ScientistCurrency(0);
+        ScientificTrigger = (ShortBigInteger)"10";
+        scientificTriggerBorder = (ShortBigInteger)"1";
         addingProducts = workersNumber * addingProductsNumber * productsRatio;
         UpdateTextFields();
     }
@@ -118,17 +125,41 @@ public class Manufacture : MonoBehaviour
         addingProductsSlider.Text.text = addingProducts.ToString();
     }
 
+    public void UpdateScientificCurrency(ShortBigInteger value)
+    {
+        ScientificCurrencyUpdate?.Invoke(this, new ManufactureEventArgs(value));
+    }
+
     public void BuyWorker(ShortBigInteger workerNumber)
     {
         workersNumber += workerNumber;
         addingProducts = workersNumber * addingProductsNumber * productsRatio;
         productsSlider.DrawLayer(ShortBigInteger.Division(workersNumber, scientificTrigger));
 
-        if (workersNumber + 1 > scientificTrigger)
-        {
-            scientificTrigger *= 10;
-        }
+        CheckScientificTrigger();
         UpdateTextFields();
+    }
+
+    private void CheckScientificTrigger()
+    {
+        var workers = workersNumber;
+        if (workers >= ScientificTrigger)
+        {
+            var scientificCurrencyCount = 0;
+            while (workers / 10 >= scientificTriggerBorder)
+            {
+                scientificCurrencyCount += 1;
+                workers /= 10;
+            }
+
+            scientificTriggerBorder *= (ShortBigInteger)Math.Pow(10,scientificCurrencyCount);
+            ScientificTrigger *= 10;
+            scientistCurrency.Amount = scientificCurrencyCount * 5;//создать переменную
+            UpdateScientificCurrency(scientistCurrency.Amount);
+            scientistCurrency.Amount = 0;
+        }
+
+        Debug.Log(ScientistCurrencyUpdate.Amount);
     }
 
 }

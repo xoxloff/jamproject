@@ -104,6 +104,8 @@ public class PlayerInfo : MonoBehaviour
             factory.PlayerTextUpdate += Factory_PlayerTextUpdate;
         }
 
+        SubscribeScientificCurrencyFromManufacture();
+
         StartCoroutine(UpdateMainCurrency());
         UpdateRankSlider();
     }
@@ -166,6 +168,23 @@ public class PlayerInfo : MonoBehaviour
                 manufacture.PurchaseButtonText.text = $"BUY {purchaseText}";
             }
         }
+    }
+
+    private void SubscribeScientificCurrencyFromManufacture()
+    {
+        foreach (var factory in Factories)
+        {
+            foreach (var manufacture in factory.Manufactures)
+            {
+                manufacture.ScientificCurrencyUpdate += Manufacture_ScientificCurrencyUpdate; 
+            }
+        }
+    }
+
+    private void Manufacture_ScientificCurrencyUpdate(object sender, ManufactureEventArgs e)
+    {
+        ScientistCurrency.Amount += e.addingProductsNumber;
+        UpdateScientificCurrencyText();
     }
 
     private void UpdateRankSlider()
