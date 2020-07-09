@@ -181,7 +181,7 @@ public class PlayerInfo : MonoBehaviour
         mainCurrencySlider.Text.text = MainCurrency.Amount.ToString();
         UpdateBuyButtonsText();
     }
-    private void UpdateBuyButtonsText()
+    public void UpdateBuyButtonsText()
     {
         foreach (var factory in Factories)
         {

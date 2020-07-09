@@ -5,7 +5,7 @@ public enum CurrencyType
     Scientific,
     Potato,
     Farmer,
-    Tent,
+    Camp,
 }
 public interface ICurrency
 {

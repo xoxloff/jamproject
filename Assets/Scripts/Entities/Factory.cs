@@ -66,9 +66,16 @@ public class Factory : MonoBehaviour
                     CurrencyType.Farmer,
                     new MainCurrency(1),
                     Product.GetCostValue(MainProduct, 1)));
+        products.Add(AddProduct("Camp",
+            null,
+            CurrencyType.Camp,
+            new MainCurrency(1),
+            Product.GetCostValue(Products[1],20)));
         //products.Add(AddProduct("Some", null, CurrencyType.bus, new MainCurrency(1), Product.GetCostValue(Products[Products.Count - 1], (Products.Count - 1) * 1.5f)));
         Products[1].Amount = 1;
+        //Products[2].Amount = 1;
         Manufactures.Add(AddManufacture(MainProduct, Products[1]));
+        Manufactures.Add(AddManufacture(Products[1], Products[2]));
     }
 
     public Product AddProduct(string name, Image image, CurrencyType type, params ICurrency[] cost) => new Product(products.Count, image, name, 0, type, cost.ToList());
@@ -79,8 +86,9 @@ public class Factory : MonoBehaviour
         manufacture.Workers = workerProduct;
         manufacture.ScientificTrigger = new ShortBigInteger(10);
         manufacture.ProductsRatio = "1";
-        manufacture.AddingProductsNumber = 50;
+        manufacture.AddingProductsNumber = 1;
         manufacture.Product = currency;
+        manufacture.ProductionTime = 1.5f;
         manufacture.FactoryTextUpdate += Factory_FactoryTextUpdate;
         manufacture.Buy += Manufacture_Buy;
         manufacture.ScientificCurrencyUpdate += Factory_ScientificCurrencyUpdate;
@@ -191,6 +199,7 @@ public class Factory : MonoBehaviour
         {
             return;
         }
+
         foreach (var currency in e.Currencies)
         {
             switch (currency)
@@ -206,8 +215,15 @@ public class Factory : MonoBehaviour
                     break;
             }
         }
+
         manufacture.BuyWorker(minCostNumber.Value);
+        PlayerRef.UpdateBuyButtonsText();
         UpdateTextFields();
+        foreach (var m in Manufactures)
+        {
+            m.UpdateAddingProducts();
+            m.UpdateTextFields();
+        }
     }
     private void Factory_FactoryTextUpdate(object sender, ManufactureEventArgs e)
     {
@@ -219,6 +235,7 @@ public class Factory : MonoBehaviour
 
         foreach (var m in Manufactures)
         {
+            m.UpdateAddingProducts();
             m.UpdateTextFields();
         }
 

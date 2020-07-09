@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +31,7 @@ public class Manufacture : MonoBehaviour
     private ShortBigInteger scientificTrigger; //rename
     [SerializeField]
     private ShortBigInteger scientificTriggerBorder; //rename
-
+    private bool EnableClick;
     #region UI
     [SerializeField]
     private CustomSlider productsSlider;
@@ -102,6 +104,7 @@ public class Manufacture : MonoBehaviour
         ScientificTrigger = (ShortBigInteger)"10";
         scientificTriggerBorder = (ShortBigInteger)"1";
         addingProducts = Workers.Amount * addingProductsNumber * productsRatio;
+        EnableClick = true;
         UpdateTextFields();
 
         Debug.Log("Manufacture added");
@@ -109,21 +112,32 @@ public class Manufacture : MonoBehaviour
 
     public void ProductBtnClick()
     {
+        if (!EnableClick)
+            return;
+
+        EnableClick = false;
+        StartCoroutine(ProductBtnClickCoroutine(productionTime));
         UpdateTextFields();
         product.Amount += addingProducts;
         FactoryTextUpdate?.Invoke(this, new ManufactureEventArgs(addingProducts));
     }
+
+    private IEnumerator ProductBtnClickCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        EnableClick = true;
+    }
+
     public void BuyBtnClick()
     {
         Buy?.Invoke(this, new BuyEventArgs(workers.Cost));
     }
-   
+
 
     public void BuyWorker(ShortBigInteger workerNumber)
     {
         Workers.Amount += workerNumber;
         addingProducts = Workers.Amount * addingProductsNumber * productsRatio;
-        productsSlider.DrawLayer(ShortBigInteger.Division(Workers.Amount, scientificTrigger));
 
         CheckScientificTrigger();
         UpdateTextFields();
@@ -131,9 +145,10 @@ public class Manufacture : MonoBehaviour
 
     private void CheckScientificTrigger()
     {
+        productsSlider.DrawLayer(ShortBigInteger.Division(Workers.Amount, scientificTrigger));
         var workers = Workers.Amount;
 
-        if (workers < ScientificTrigger) 
+        if (workers < ScientificTrigger)
             return;
 
         var scientificCurrencyCount = 0;
@@ -143,7 +158,7 @@ public class Manufacture : MonoBehaviour
             workers /= 10;
         }
 
-        scientificTriggerBorder *= (ShortBigInteger)Math.Pow(10,scientificCurrencyCount);
+        scientificTriggerBorder *= (ShortBigInteger)Math.Pow(10, scientificCurrencyCount);
         ScientificTrigger *= 10;
 
         scientistCurrency.Amount = scientificCurrencyCount * 5; //создать переменную
@@ -155,5 +170,11 @@ public class Manufacture : MonoBehaviour
     {
         productsSlider.Text.text = Workers.Amount.ToString();
         addingProductsSlider.Text.text = addingProducts.ToString();
+    }
+
+    public void UpdateAddingProducts()
+    {
+        addingProducts = Workers.Amount * addingProductsNumber * productsRatio;
+        CheckScientificTrigger();
     }
 }
