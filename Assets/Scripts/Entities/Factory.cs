@@ -25,7 +25,7 @@ public class Factory : MonoBehaviour
     private Text factoryText;
 
     public PlayerInfo PlayerRef { get; set; }
-    
+
     public List<Manufacture> Manufactures
     {
         get => manufactures;
@@ -38,24 +38,46 @@ public class Factory : MonoBehaviour
 
     public Factory()
     {
-        
+
         // AddManufacture(products[1])
     }
 
     void Start()
     {
-        
         Manufactures = new List<Manufacture>();
 
-
         //products.Add(AddProduct("Some", null, CurrencyType.bus, new MainCurrency(1), Product.GetCostValue(Products[Products.Count - 1], (Products.Count - 1) * 1.5f)));
-        var image = Resources.Load<Sprite>("Icons/Products/potato");
-        var image2 = Resources.Load<Sprite>("Icons/Products/farmer");
+        var image = Resources.Load<Sprite>("Icons/Products/farmer");
+        var image2 = Resources.Load<Sprite>("Icons/Products/camp");
+        var image3 = Resources.Load<Sprite>("Icons/Products/truck");
         Manufactures.Add(AddManufacture(PlayerRef.Products[0], PlayerRef.Products[1], 1, image));
         Manufactures.Add(AddManufacture(PlayerRef.Products[1], PlayerRef.Products[2], 2, image2));
+        Manufactures.Add(AddManufacture(PlayerRef.Products[2], PlayerRef.Products[3], 4, image3));
+
+        StartCoroutine(AutoIncrement());
     }
 
-   
+    private void Update()
+    {
+
+
+
+    }
+
+    IEnumerator AutoIncrement()
+    {
+        if (manufactures.Count > 0)
+        {
+            var man = manufactures[0];
+            man.AutomativeProcess = true;
+            while (true)
+            {
+                man.SliderAnimator.Play("SliderAnim");
+                man.StartCoroutine(man.ProductBtnClickCoroutine(1));
+                yield return new WaitForSeconds(1);
+            }
+        }
+    }
 
     public Manufacture AddManufacture(Product currency, Product workerProduct, float productionTime, Sprite img)
     {
@@ -73,6 +95,7 @@ public class Factory : MonoBehaviour
         manufacture.ProductBtnImage.sprite = img;
         return manufacture;
     }
+
     public ShortBigInteger? CheckManufacturePurchase(Manufacture manufacture)
     {
         var isBought = false;
@@ -125,6 +148,7 @@ public class Factory : MonoBehaviour
 
         return count.Min(c => c.Value);
     }
+
     private ShortBigInteger GetPurchaseValue(ShortBigInteger cost, ShortBigInteger max)
     {
         switch (PlayerRef.PurchaseMode)
@@ -204,6 +228,7 @@ public class Factory : MonoBehaviour
             m.UpdateTextFields();
         }
     }
+
     private void Factory_FactoryTextUpdate(object sender, ManufactureEventArgs e)
     {
         var manufacture = sender as Manufacture;
@@ -220,6 +245,7 @@ public class Factory : MonoBehaviour
 
         UpdateTextFields();
     }
+
     private void Factory_ScientificCurrencyUpdate(object sender, AddCurrencyEventArgs e)
     {
         ScientificCurrencyUpdate?.Invoke(sender, e);

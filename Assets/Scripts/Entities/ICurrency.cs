@@ -6,6 +6,7 @@ public enum CurrencyType
     Potato,
     Farmer,
     Camp,
+    Truck
 }
 public interface ICurrency
 {

@@ -154,10 +154,17 @@ public class PlayerInfo : MonoBehaviour
             null,
             CurrencyType.Camp,
             new MainCurrency(1),
-            Product.GetCostValue(Products[1], 20)));
+            Product.GetCostValue(Products[0], 10),
+            Product.GetCostValue(Products[1], 1)));
+        products.Add(AddProduct("Truck",
+            null,
+            CurrencyType.Camp,
+            new MainCurrency(1),
+            Product.GetCostValue(Products[0], 1000),
+            Product.GetCostValue(Products[2], 5)));
         Products[1].Amount = 1;
-        Products[2].Amount = 1;
-
+        Products[2].Amount = 0;
+        Products[3].Amount = 0;
         //set quests - пока хардкод, далее из файла
         Quests.Add(Instantiate(questPrefab, questContainer.transform).GetComponent<Quest>());
         Quests.Add(Instantiate(questPrefab, questContainer.transform).GetComponent<Quest>());

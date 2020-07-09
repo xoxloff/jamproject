@@ -31,12 +31,14 @@ public class Manufacture : MonoBehaviour
     private ShortBigInteger scientificTrigger; //rename
     [SerializeField]
     private ShortBigInteger scientificTriggerBorder; //rename
-    private bool EnableClick;
+    private bool enableClick;
     #region UI
     [SerializeField]
     private CustomSlider productsSlider;
     [SerializeField]
     private CustomSlider addingProductsSlider;
+    private bool automativeProcess;
+
     public Text PurchaseButtonText;
     public Animator SliderAnimator;
     public Image ProductBtnImage;
@@ -46,6 +48,14 @@ public class Manufacture : MonoBehaviour
     public event EventHandler<AddCurrencyEventArgs> ScientificCurrencyUpdate;
     public event EventHandler<BuyEventArgs> Buy;
 
+    public bool AutomativeProcess
+    {
+        get => automativeProcess;
+        set { 
+            automativeProcess = value;
+            enableClick = false;
+        }
+    }
 
     public Product Product
     {
@@ -106,26 +116,26 @@ public class Manufacture : MonoBehaviour
         ScientificTrigger = (ShortBigInteger)"10";
         scientificTriggerBorder = (ShortBigInteger)"1";
         addingProducts = Workers.Amount * addingProductsNumber * productsRatio;
-        EnableClick = true;
+        enableClick = true;
         UpdateTextFields();
         Debug.Log("Manufacture added");
     }
 
     public void ProductBtnClick()
     {
-        if (!EnableClick)
+        if (!enableClick || automativeProcess)
             return;
 
-        EnableClick = false;
+        enableClick = false;
         SliderAnimator.Play("SliderAnim");
         StartCoroutine(ProductBtnClickCoroutine(productionTime));
-        
     }
 
-    private IEnumerator ProductBtnClickCoroutine(float time)
+    public IEnumerator ProductBtnClickCoroutine(float time)
     {
         yield return new WaitForSeconds(time);
-        EnableClick = true;
+        if (!AutomativeProcess)
+            enableClick = true;
         UpdateTextFields();
         product.Amount += addingProducts;
         FactoryTextUpdate?.Invoke(this, new ManufactureEventArgs(addingProducts));
