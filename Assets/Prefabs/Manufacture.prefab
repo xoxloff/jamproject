@@ -865,6 +865,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CurrentValueSlider
       objectReference: {fileID: 0}
+    - target: {fileID: 7888204644754189806, guid: cdaf2592bf27ded4582396c90020a83b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdaf2592bf27ded4582396c90020a83b, type: 3}
 --- !u!224 &5748714135721238286 stripped
