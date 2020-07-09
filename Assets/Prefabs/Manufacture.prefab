@@ -312,6 +312,7 @@ MonoBehaviour:
   addingProductsSlider: {fileID: 2530486726346576388}
   PurchaseButtonText: {fileID: 3305991213203726203}
   SliderAnimator: {fileID: 3185946273385374964}
+  ProductBtnImage: {fileID: 1510094821774704015}
 --- !u!1 &5403297586023994236
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,7 +423,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 42.899994, y: -1.5099983}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7364430803346485345
 CanvasRenderer:
@@ -451,7 +452,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -481,11 +482,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
-    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 0}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -848,6 +849,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418823444373621403, guid: cdaf2592bf27ded4582396c90020a83b,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 91.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418823444373621403, guid: cdaf2592bf27ded4582396c90020a83b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7779654070090569237, guid: cdaf2592bf27ded4582396c90020a83b,
         type: 3}

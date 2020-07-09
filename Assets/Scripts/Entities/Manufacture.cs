@@ -39,6 +39,7 @@ public class Manufacture : MonoBehaviour
     private CustomSlider addingProductsSlider;
     public Text PurchaseButtonText;
     public Animator SliderAnimator;
+    public Image ProductBtnImage;
     #endregion
 
     public event EventHandler<ManufactureEventArgs> FactoryTextUpdate;

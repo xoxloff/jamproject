@@ -47,16 +47,17 @@ public class Factory : MonoBehaviour
         
         Manufactures = new List<Manufacture>();
 
-        
+
         //products.Add(AddProduct("Some", null, CurrencyType.bus, new MainCurrency(1), Product.GetCostValue(Products[Products.Count - 1], (Products.Count - 1) * 1.5f)));
-        
-        Manufactures.Add(AddManufacture(PlayerRef.Products[0], PlayerRef.Products[1], 1));
-        Manufactures.Add(AddManufacture(PlayerRef.Products[1], PlayerRef.Products[2], 2));
+        var image = Resources.Load<Sprite>("Icons/Products/potato");
+        var image2 = Resources.Load<Sprite>("Icons/Products/farmer");
+        Manufactures.Add(AddManufacture(PlayerRef.Products[0], PlayerRef.Products[1], 1, image));
+        Manufactures.Add(AddManufacture(PlayerRef.Products[1], PlayerRef.Products[2], 2, image2));
     }
 
    
 
-    public Manufacture AddManufacture(Product currency, Product workerProduct, float productionTime)
+    public Manufacture AddManufacture(Product currency, Product workerProduct, float productionTime, Sprite img)
     {
         var manufacture = Instantiate(manufacturePrefab, manufactureContainer.transform).GetComponent<Manufacture>();
         manufacture.Workers = workerProduct;
@@ -69,6 +70,7 @@ public class Factory : MonoBehaviour
         manufacture.FactoryTextUpdate += Factory_FactoryTextUpdate;
         manufacture.Buy += Manufacture_Buy;
         manufacture.ScientificCurrencyUpdate += Factory_ScientificCurrencyUpdate;
+        manufacture.ProductBtnImage.sprite = img;
         return manufacture;
     }
     public ShortBigInteger? CheckManufacturePurchase(Manufacture manufacture)
