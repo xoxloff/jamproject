@@ -17,7 +17,7 @@ public class CustomSlider : MonoBehaviour
     void Start()
     {
         fillLayer = fillLayer.GetComponent<RectTransform>();
-        DrawLayer(ratio);
+        DrawLayer(0);
     }
 
     public void DrawLayer(float _ratio)

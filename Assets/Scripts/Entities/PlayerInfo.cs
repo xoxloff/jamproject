@@ -74,7 +74,10 @@ public class PlayerInfo : MonoBehaviour
     public int CurrentRankValue
     {
         get => currentRankValue;
-        set => currentRankValue = value;
+        set {
+            currentRankValue = value;
+            UpdateRankSlider();
+        }
     }
     public int RequiredRankValue
     {
@@ -165,10 +168,11 @@ public class PlayerInfo : MonoBehaviour
         Quests[0].requiredAmount = (ShortBigInteger)"100";
         Quests[1].requiredAmount = (ShortBigInteger)"1 A";
         Quests[2].requiredAmount = (ShortBigInteger)"10 A";
-        foreach (var item in Quests)
+        foreach (var quest in Quests)
         {
-            item.Product = Products[0];
-            item.UpdateTextFields();
+            quest.Product = Products[0];
+            quest.UpdateTextFields();
+            quest.PlayerRef = this;
         }
 
 
@@ -180,7 +184,7 @@ public class PlayerInfo : MonoBehaviour
 
     private void Update()
     {
-        
+
     }
 
     public void ClickPurchaseModeButton()

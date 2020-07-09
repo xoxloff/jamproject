@@ -20,6 +20,8 @@ public class Quest : MonoBehaviour
     [SerializeField]
     private GameObject chestPanel;
 
+    public PlayerInfo PlayerRef;
+
     #region UI
     public Text DescriptionText;
     public Text CurrentProcessText;
@@ -61,7 +63,12 @@ public class Quest : MonoBehaviour
     {
         if (currentAmount >= requiredAmount)
         {
+            var randomSCurrency = (ShortBigInteger) Random.Range(50,70);
+            PlayerRef.ScientistCurrency.Amount += randomSCurrency;
+            PlayerRef.CurrentRankValue++;
+            PlayerRef.UpdateScientificCurrencyText();
             Debug.Log("You get reward");
+            Destroy(this.gameObject);
         }
     }
 
