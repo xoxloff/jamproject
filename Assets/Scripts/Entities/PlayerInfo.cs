@@ -54,6 +54,11 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField]
     private Animator mainCurrencySliderAnimator;
 
+    private List<Product> products;
+
+    public List<Product> Products { get => products; set => products = value; }
+
+
     public PurchaseModeEnum PurchaseMode
     {
         get => purchaseMode;
@@ -118,6 +123,7 @@ public class PlayerInfo : MonoBehaviour
 
     private void Start()
     {
+        //set factories
         Factory newFactory = Instantiate(factoryPrefab, factoryContainer.transform).GetComponent<Factory>();
         Factories.Add(newFactory);
         PurchaseMode = PurchaseModeEnum.X1;
@@ -130,14 +136,51 @@ public class PlayerInfo : MonoBehaviour
             factory.PlayerTextUpdate += Factory_PlayerTextUpdate;
             factory.ScientificCurrencyUpdate += Manufacture_ScientificCurrencyUpdate;
         }
+        //set products
+        products = new List<Product>();
+        products.Add(AddProduct("Potata",
+                                null,
+                                CurrencyType.Potato,
+                                new MainCurrency(1)));
+        products.Add(AddProduct("Farmer",
+                    null,
+                    CurrencyType.Farmer,
+                    new MainCurrency(1),
+                    Product.GetCostValue(products[0], 1)));
+        products.Add(AddProduct("Camp",
+            null,
+            CurrencyType.Camp,
+            new MainCurrency(1),
+            Product.GetCostValue(Products[1], 20)));
+        Products[1].Amount = 1;
+        Products[2].Amount = 1;
+
+        //set quests - пока хардкод, далее из файла
+        Quests.Add(Instantiate(questPrefab, questContainer.transform).GetComponent<Quest>());
+        Quests.Add(Instantiate(questPrefab, questContainer.transform).GetComponent<Quest>());
+        Quests.Add(Instantiate(questPrefab, questContainer.transform).GetComponent<Quest>());
+        Quests[0].Describtion = "Potato";
+        Quests[1].Describtion = "Potato";
+        Quests[2].Describtion = "Potato";
+        Quests[0].requiredAmount = (ShortBigInteger)"100";
+        Quests[1].requiredAmount = (ShortBigInteger)"1 A";
+        Quests[2].requiredAmount = (ShortBigInteger)"10 A";
+        foreach (var item in Quests)
+        {
+            item.Product = Products[0];
+            item.UpdateTextFields();
+        }
+
 
         StartCoroutine(UpdateMainCurrency());
         UpdateRankSlider();
     }
 
+    public Product AddProduct(string name, Image image, CurrencyType type, params ICurrency[] cost) => new Product(products.Count, image, name, 0, type, cost.ToList());
+
     private void Update()
     {
-
+        
     }
 
     public void ClickPurchaseModeButton()

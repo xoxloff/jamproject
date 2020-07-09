@@ -6,47 +6,68 @@ using UnityEngine.UI;
 public class Quest : MonoBehaviour
 {
     [SerializeField]
-    private int description;
-    [SerializeField] 
+    private string description;
+    [SerializeField]
     private Image icon;
     [SerializeField]
     private int name;
+    public ShortBigInteger requiredAmount;
+    public ShortBigInteger currentAmount;
     [SerializeField]
-    private ShortBigInteger requiredAmount;
-    [SerializeField]
-    private ShortBigInteger currentAmount;
-    [SerializeField]
-    private Manufacture manufacture;
+    private Product product;
     [SerializeField]
     private List<Award> awards;
+    [SerializeField]
+    private GameObject chestPanel;
 
     #region UI
-    public Text Description;
-    public Text CurrentProcess;
+    public Text DescriptionText;
+    public Text CurrentProcessText;
     #endregion
 
-
+    public string Describtion { get => description; set => description = value; }
+    public Product Product { get => product; set => product = value; }
     private void Start()
     {
-        currentAmount = (ShortBigInteger)"30 B";
-        requiredAmount = (ShortBigInteger)"50 B";
+        currentAmount = (ShortBigInteger)"0";
 
         UpdateTextFields();
+        StartCoroutine(CheckProducts());
+    }
+
+    IEnumerator CheckProducts()
+    {
+        while (true)
+        {
+            if (currentAmount >= requiredAmount)
+            {
+                chestPanel.SetActive(true);
+            }
+            else
+            {
+                currentAmount = Product.Amount;
+                UpdateTextFields();
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     private void Update()
     {
-        
+
     }
 
     public void ClickQuestButton()
     {
-        //Reminder: Нажимается только тогда, когда выполнено условие current>=required
+        if (currentAmount >= requiredAmount)
+        {
+            Debug.Log("You get reward");
+        }
     }
 
-    private void UpdateTextFields()
+    public void UpdateTextFields()
     {
-        Description.text = "Desc";
-        CurrentProcess.text = currentAmount.ToString() + "/" + requiredAmount.ToString();
+        DescriptionText.text = Describtion;
+        CurrentProcessText.text = currentAmount.ToString() + "/" + requiredAmount.ToString();
     }
 }

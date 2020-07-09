@@ -25,22 +25,12 @@ public class Factory : MonoBehaviour
     private Text factoryText;
 
     public PlayerInfo PlayerRef { get; set; }
-    public Product MainProduct
-    {
-        get => mainProduct;
-        set => mainProduct = value;
-    }
+    
     public List<Manufacture> Manufactures
     {
         get => manufactures;
         set => manufactures = value;
     }
-    public List<Product> Products
-    {
-        get => products;
-        set => products = value;
-    }
-
 
     public event EventHandler<EventArgs> PlayerTextUpdate;
 
@@ -54,31 +44,17 @@ public class Factory : MonoBehaviour
 
     void Start()
     {
-        products = new List<Product>();
+        
         Manufactures = new List<Manufacture>();
-        MainProduct = AddProduct("Potata",
-                                null,
-                                CurrencyType.Potato,
-                                new MainCurrency(1));
-        products.Add(MainProduct);
-        products.Add(AddProduct("Farmer",
-                    null,
-                    CurrencyType.Farmer,
-                    new MainCurrency(1),
-                    Product.GetCostValue(MainProduct, 1)));
-        products.Add(AddProduct("Camp",
-            null,
-            CurrencyType.Camp,
-            new MainCurrency(1),
-            Product.GetCostValue(Products[1],20)));
+
+        
         //products.Add(AddProduct("Some", null, CurrencyType.bus, new MainCurrency(1), Product.GetCostValue(Products[Products.Count - 1], (Products.Count - 1) * 1.5f)));
-        Products[1].Amount = 1;
-        Products[2].Amount = 1;
-        Manufactures.Add(AddManufacture(MainProduct, Products[1],1));
-        Manufactures.Add(AddManufacture(Products[1], Products[2],2));
+        
+        Manufactures.Add(AddManufacture(PlayerRef.Products[0], PlayerRef.Products[1], 1));
+        Manufactures.Add(AddManufacture(PlayerRef.Products[1], PlayerRef.Products[2], 2));
     }
 
-    public Product AddProduct(string name, Image image, CurrencyType type, params ICurrency[] cost) => new Product(products.Count, image, name, 0, type, cost.ToList());
+   
 
     public Manufacture AddManufacture(Product currency, Product workerProduct, float productionTime)
     {
@@ -130,8 +106,8 @@ public class Factory : MonoBehaviour
                     }
                 case Product c:
                     {
-                        var cost = GetPurchaseValue(c.Amount, Products[c.Id].Amount);
-                        isBought = Products[c.Id].Check(cost * c.Amount);
+                        var cost = GetPurchaseValue(c.Amount, PlayerRef.Products[c.Id].Amount);
+                        isBought = PlayerRef.Products[c.Id].Check(cost * c.Amount);
                         if (isBought)
                         {
                             count.Add(cost);
@@ -212,7 +188,7 @@ public class Factory : MonoBehaviour
                     PlayerRef.ScientistCurrency.Buy(minCostNumber.Value * c.Amount);
                     break;
                 case Product c:
-                    Products[c.Id].Buy(minCostNumber.Value * c.Amount);
+                    PlayerRef.Products[c.Id].Buy(minCostNumber.Value * c.Amount);
                     break;
             }
         }
@@ -249,7 +225,7 @@ public class Factory : MonoBehaviour
 
     private void UpdateTextFields()
     {
-        factoryText.text = MainProduct.Amount.ToString();
+        factoryText.text = PlayerRef.Products[0].Amount.ToString();
         PlayerTextUpdate?.Invoke(this, EventArgs.Empty);
     }
 }
