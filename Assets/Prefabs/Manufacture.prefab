@@ -303,6 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   product: {fileID: 0}
+  workers: {fileID: 0}
   productionTime: 0
   timeRatio: 0
   scientist: {fileID: 0}
@@ -310,6 +311,7 @@ MonoBehaviour:
   productsSlider: {fileID: 2777516963497604507}
   addingProductsSlider: {fileID: 2530486726346576388}
   PurchaseButtonText: {fileID: 3305991213203726203}
+  SliderAnimator: {fileID: 3185946273385374964}
 --- !u!1 &5403297586023994236
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,6 +726,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a245c63f4148dce4cb64f92d4feff834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &3185946273385374964 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7888204644754189806, guid: cdaf2592bf27ded4582396c90020a83b,
+    type: 3}
+  m_PrefabInstance: {fileID: 4705779018626337050}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4961816317191155333
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -839,7 +847,7 @@ PrefabInstance:
     - target: {fileID: 5413676255056113247, guid: cdaf2592bf27ded4582396c90020a83b,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.84
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7779654070090569237, guid: cdaf2592bf27ded4582396c90020a83b,
         type: 3}

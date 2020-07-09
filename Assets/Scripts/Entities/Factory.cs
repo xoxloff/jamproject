@@ -73,14 +73,14 @@ public class Factory : MonoBehaviour
             Product.GetCostValue(Products[1],20)));
         //products.Add(AddProduct("Some", null, CurrencyType.bus, new MainCurrency(1), Product.GetCostValue(Products[Products.Count - 1], (Products.Count - 1) * 1.5f)));
         Products[1].Amount = 1;
-        //Products[2].Amount = 1;
-        Manufactures.Add(AddManufacture(MainProduct, Products[1]));
-        Manufactures.Add(AddManufacture(Products[1], Products[2]));
+        Products[2].Amount = 1;
+        Manufactures.Add(AddManufacture(MainProduct, Products[1],1));
+        Manufactures.Add(AddManufacture(Products[1], Products[2],2));
     }
 
     public Product AddProduct(string name, Image image, CurrencyType type, params ICurrency[] cost) => new Product(products.Count, image, name, 0, type, cost.ToList());
 
-    public Manufacture AddManufacture(Product currency, Product workerProduct)
+    public Manufacture AddManufacture(Product currency, Product workerProduct, float productionTime)
     {
         var manufacture = Instantiate(manufacturePrefab, manufactureContainer.transform).GetComponent<Manufacture>();
         manufacture.Workers = workerProduct;
@@ -88,7 +88,8 @@ public class Factory : MonoBehaviour
         manufacture.ProductsRatio = "1";
         manufacture.AddingProductsNumber = 1;
         manufacture.Product = currency;
-        manufacture.ProductionTime = 1.5f;
+        manufacture.ProductionTime = productionTime;
+        manufacture.SliderAnimator.speed = 1f / manufacture.ProductionTime;
         manufacture.FactoryTextUpdate += Factory_FactoryTextUpdate;
         manufacture.Buy += Manufacture_Buy;
         manufacture.ScientificCurrencyUpdate += Factory_ScientificCurrencyUpdate;

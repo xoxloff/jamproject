@@ -38,6 +38,7 @@ public class Manufacture : MonoBehaviour
     [SerializeField]
     private CustomSlider addingProductsSlider;
     public Text PurchaseButtonText;
+    public Animator SliderAnimator;
     #endregion
 
     public event EventHandler<ManufactureEventArgs> FactoryTextUpdate;
@@ -106,7 +107,6 @@ public class Manufacture : MonoBehaviour
         addingProducts = Workers.Amount * addingProductsNumber * productsRatio;
         EnableClick = true;
         UpdateTextFields();
-
         Debug.Log("Manufacture added");
     }
 
@@ -116,16 +116,18 @@ public class Manufacture : MonoBehaviour
             return;
 
         EnableClick = false;
+        SliderAnimator.Play("SliderAnim");
         StartCoroutine(ProductBtnClickCoroutine(productionTime));
-        UpdateTextFields();
-        product.Amount += addingProducts;
-        FactoryTextUpdate?.Invoke(this, new ManufactureEventArgs(addingProducts));
+        
     }
 
     private IEnumerator ProductBtnClickCoroutine(float time)
     {
         yield return new WaitForSeconds(time);
         EnableClick = true;
+        UpdateTextFields();
+        product.Amount += addingProducts;
+        FactoryTextUpdate?.Invoke(this, new ManufactureEventArgs(addingProducts));
     }
 
     public void BuyBtnClick()

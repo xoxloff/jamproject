@@ -5053,6 +5053,7 @@ MonoBehaviour:
   factoryPrefab: {fileID: 2192803231825203272, guid: da8338ae3c6671447b26c5e8f383ed19,
     type: 3}
   factoryContainer: {fileID: 1362980111}
+  mainCurrencySliderAnimator: {fileID: 1847616940}
 --- !u!4 &1700823656
 Transform:
   m_ObjectHideFlags: 0
@@ -5141,6 +5142,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1745459332}
   m_CullTransparentMesh: 0
+--- !u!95 &1847616940 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7888204644754189806, guid: cdaf2592bf27ded4582396c90020a83b,
+    type: 3}
+  m_PrefabInstance: {fileID: 184353343}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1851518395
 PrefabInstance:
   m_ObjectHideFlags: 0

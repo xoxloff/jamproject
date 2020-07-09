@@ -51,6 +51,8 @@ public class PlayerInfo : MonoBehaviour
     private GameObject factoryPrefab;
     [SerializeField]
     private GameObject factoryContainer;
+    [SerializeField]
+    private Animator mainCurrencySliderAnimator;
 
     public PurchaseModeEnum PurchaseMode
     {
@@ -170,6 +172,8 @@ public class PlayerInfo : MonoBehaviour
     {
         while (true)
         {
+            mainCurrencySliderAnimator.speed = 1;
+            mainCurrencySliderAnimator.Play("SliderAnim");
             MainCurrency.Amount++;
             UpdateMainCurrencyText();
             yield return new WaitForSeconds(1f);
