@@ -166,25 +166,30 @@ public class PlayerInfo : MonoBehaviour
         Products[2].Amount = 0;
         Products[3].Amount = 0;
         //set quests - пока хардкод, далее из файла
-        Quests.Add(Instantiate(questPrefab, questContainer.transform).GetComponent<Quest>());
-        Quests.Add(Instantiate(questPrefab, questContainer.transform).GetComponent<Quest>());
-        Quests.Add(Instantiate(questPrefab, questContainer.transform).GetComponent<Quest>());
-        Quests[0].Describtion = "Potato";
-        Quests[1].Describtion = "Potato";
-        Quests[2].Describtion = "Potato";
-        Quests[0].requiredAmount = (ShortBigInteger)"100";
-        Quests[1].requiredAmount = (ShortBigInteger)"1 A";
-        Quests[2].requiredAmount = (ShortBigInteger)"10 A";
-        foreach (var quest in Quests)
-        {
-            quest.Product = Products[0];
-            quest.UpdateTextFields();
-            quest.PlayerRef = this;
-        }
-
+        AddQuest("Potato", (ShortBigInteger)"100", Products[0]);
+        AddQuest("Potato", (ShortBigInteger)"1 A", Products[0]);
+        AddQuest("Potato", (ShortBigInteger)"10 A", Products[0]);
 
         StartCoroutine(UpdateMainCurrency());
         UpdateRankSlider();
+    }
+
+    private void Quest_QuestLifecycle(object sender, QuestEventArgs e)
+    {
+        Destroy(e.QuestPanel);
+        AddQuest("Potato", (ShortBigInteger)"100 A", Products[0]);
+    }
+
+    public void AddQuest(string description, ShortBigInteger amount, Product product)
+    {
+        var quest = Instantiate(questPrefab, questContainer.transform).GetComponent<Quest>();
+        quest.Describtion = description;
+        quest.requiredAmount = amount;
+        quest.Product = product;
+        quest.UpdateTextFields();
+        quest.PlayerRef = this;
+        quest.QuestLifecycle += Quest_QuestLifecycle;
+        Quests.Add(quest);
     }
 
     public Product AddProduct(string name, Image image, CurrencyType type, params ICurrency[] cost) => new Product(products.Count, image, name, 0, type, cost.ToList());

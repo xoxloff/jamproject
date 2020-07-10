@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,9 @@ public class Quest : MonoBehaviour
     private GameObject chestPanel;
 
     public PlayerInfo PlayerRef;
+
+    public event EventHandler<QuestEventArgs> QuestLifecycle;
+
 
     #region UI
     public Text DescriptionText;
@@ -63,12 +67,12 @@ public class Quest : MonoBehaviour
     {
         if (currentAmount >= requiredAmount)
         {
-            var randomSCurrency = (ShortBigInteger) Random.Range(50,70);
+            var randomSCurrency = (ShortBigInteger) UnityEngine.Random.Range(50,70);
             PlayerRef.ScientistCurrency.Amount += randomSCurrency;
             PlayerRef.CurrentRankValue++;
             PlayerRef.UpdateScientificCurrencyText();
             Debug.Log("You get reward");
-            Destroy(this.gameObject);
+            QuestLifecycle?.Invoke(this,new QuestEventArgs(gameObject));
         }
     }
 
